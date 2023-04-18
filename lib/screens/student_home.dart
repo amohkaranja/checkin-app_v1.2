@@ -1,3 +1,5 @@
+import 'package:checkin2/screens/class_scan.dart';
+import 'package:checkin2/screens/generate_code.dart';
 import 'package:flutter/material.dart';
 import 'user_profile.dart';
 class StudentHomeScreen extends StatelessWidget {
@@ -55,11 +57,11 @@ class StudentHomeScreen extends StatelessWidget {
             child: Center(
               child: GestureDetector(
                  onTap: () {
-                    //       Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => ScanClass()),
-                    // );
+                          Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ClassScan()),
+                    );
                         },
                 child: Card(
                     child: Padding(
@@ -165,20 +167,29 @@ class StudentHomeScreen extends StatelessWidget {
               )
             ]),
             child: Center(
-              child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(30.0),
-                    child: Center(
-                      child: Column(children: const <Widget>[
-                        Image(
-                          image: AssetImage("assets/images/blue_qr_code.png"),
-                          height: 80,
-                          fit: BoxFit.contain,
-                        ),
-                        Text("Generate my QR Code")
-                      ]),
+              child: GestureDetector(
+                onTap: () {
+                          Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => GenerateCode()),
+                    );
+                },
+                child: Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: Center(
+                        child: Column(children: const <Widget>[
+                          Image(
+                            image: AssetImage("assets/images/blue_qr_code.png"),
+                            height: 80,
+                            fit: BoxFit.contain,
+                          ),
+                          Text("Generate my QR Code")
+                        ]),
+                      ),
                     ),
-                  ),
+                ),
               ),
             ),
             
