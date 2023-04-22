@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:checkin2/models/user_model.dart';
+import 'package:checkin2/screens/class_instance.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
@@ -97,6 +99,44 @@ void post(dynamic data, String url, Function callback) async {
   }
   
 }
+void postScan(dynamic data, String url, Function callback) async{
+  print("step 8");
+  var apiUrl = Uri.parse(api + url);
+  print(data);
+  print("step 9");
+  var response = await http.post(apiUrl,body: data);
+  print(response);
+print("step 10");
+  var jsonResponse =  await convert.jsonDecode(response.body) as Map<String, dynamic>;
+  print(jsonResponse);
+  print(jsonResponse["success"]);
+  print("step 11");
+  switch(jsonResponse["success"]) {
+  case '1':
+    callback("success", null);
+    break;
+  case '2':
+    callback("2", {"model":ClassModel.fromJson(jsonResponse["scans"][0]),"stdId":data.student_id,"qrData":data.qr_code});
+    break;
+  case '3':
+    callback(null, "Already Signed in!");
+    break;
+  case '4':
+    callback(null, "Failed to sign in!. Please try again");
+    break;
+    case '5':
+    callback(null, "Failed to register!. Please try again");
+    break;
+}
+  if (jsonResponse["success"] == "1") {
+    // ignore: void_checks
+    return callback("success", null);
+  }else{
+    callback(null, jsonResponse["message"]);
+  }
+}
+
+
 void Patch(dynamic data, String url, Function callback) async {
    final prefs = await SharedPreferences.getInstance();
      var token= (prefs.getString("token"));

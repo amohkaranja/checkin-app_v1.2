@@ -1,5 +1,10 @@
+import 'package:checkin2/screens/class_instance.dart';
+import 'package:checkin2/screens/student_home.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+
+import '../models/user_model.dart';
+import '../utils/apis_list.dart';
 
 class ClassScan extends StatefulWidget {
   const ClassScan({super.key});
@@ -9,13 +14,64 @@ class ClassScan extends StatefulWidget {
 }
 
 class _ClassScanState extends State<ClassScan> {
+    Profile? _profile; 
     bool isScanCompleted=false;
   bool isFlashon= false;
   bool isFrontCamera=false;
+  String _errorMessage = "";
+  bool _loading=false;
   MobileScannerController scannerController= MobileScannerController();
   void closeScreen(){
     isScanCompleted=false;
   }
+  submit(Code){
+    print("step 7");
+    var data={"student_id":_profile!.id,"qr_code":Code};
+    var url="qr_code";
+    print("step 8");
+      setState(() {
+      _errorMessage = "";
+      _loading=true;
+    });
+postScan(data, url, (result, error) => {
+              if (result == null)
+                {
+                  setState(() {
+                  _loading=false;
+                }),
+                  setState(() {
+                    _errorMessage = error;
+                  })
+                }
+                else if(result=="2"){
+              ClassInstance(model:error["model"],stdId:error["stdId"],qrData:error["qrData"],)
+                }
+              else
+                {
+                    setState(() {
+                  _loading=false;
+                }),
+               
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => StudentHomeScreen()),
+                  )
+                }
+            });
+  }
+   
+     @override
+void initState() {
+  super.initState();
+  loadProfileData();
+  }
+    Future<void> loadProfileData() async {
+  final profile = await profileData();
+   setState(() {
+      _profile = profile; // assign the value of profile to _profile
+    });
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +131,7 @@ class _ClassScanState extends State<ClassScan> {
              Expanded(child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
-           Text("Plcae the QR code in the area",
+           Text("Place the QR code in the area",
            style: TextStyle(
              color: Colors.black87,
              fontSize: 18,
@@ -99,14 +155,19 @@ class _ClassScanState extends State<ClassScan> {
             child: MobileScanner(
               controller: scannerController,
         onDetect: (capture){
+          print("step 1");
               final List<Barcode> barcodes = capture.barcodes;
+              print("step 2");
              String code;
                for (final barcode in barcodes) {
+                print("step 3");
                 if(!isScanCompleted){
+                  print("step 4");
                   code=barcode.rawValue??'---';
+                  print("step 5");
                   isScanCompleted=true;
-                  print(code);
-                  // Navigator.push(context, MaterialPageRoute(builder: (context)=>ResultScreen(closeScreen: closeScreen,code: code,)));
+                  print("step 6");
+                  submit( code);
                 }
           }
             }),

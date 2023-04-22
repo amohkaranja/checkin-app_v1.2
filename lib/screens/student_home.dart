@@ -1,3 +1,4 @@
+import 'package:checkin2/screens/class_instance.dart';
 import 'package:checkin2/screens/class_scan.dart';
 import 'package:checkin2/screens/generate_code.dart';
 import 'package:flutter/material.dart';
@@ -131,11 +132,7 @@ class StudentHomeScreen extends StatelessWidget {
                                            ]),
                                              child: GestureDetector(
                                                 onTap: () {
-                    //       Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => ScannedClasses()),
-                    // );
+                    
                         },
                                                child: Card(
                                                      child: Padding(
