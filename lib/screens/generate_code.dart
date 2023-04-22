@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../models/user_model.dart';
+import '../utils/apis_list.dart';
+
 class GenerateCode extends StatefulWidget {
   const GenerateCode({super.key});
 
@@ -9,6 +12,18 @@ class GenerateCode extends StatefulWidget {
 }
 
 class _GenerateCodeState extends State<GenerateCode> {
+   Profile? _profile; 
+     @override
+void initState() {
+  super.initState();
+  loadProfileData();
+  }
+    Future<void> loadProfileData() async {
+  final profile = await profileData();
+   setState(() {
+      _profile = profile; // assign the value of profile to _profile
+    });
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +65,7 @@ class _GenerateCodeState extends State<GenerateCode> {
             ),
           ),
               Expanded(flex: 4, child: Container(
-            child: QrImage(data: "J17/MNU/033/2017",size:150 ,version: QrVersions.auto,),
+            child: QrImage(data:_profile?.regNo??'',size:250 ,version: QrVersions.auto,),
           )),
         ]),
       ),
