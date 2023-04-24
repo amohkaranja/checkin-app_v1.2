@@ -2,6 +2,7 @@
 // import 'package:checkin/screens/Scanned_classes.dart';
 // import 'package:checkin/screens/classes.dart';
 import 'package:checkin2/screens/login_page.dart';
+import 'package:checkin2/screens/scanned_classes.dart';
 // import 'package:checkin/screens/security.dart';
 import 'package:checkin2/screens/student_home.dart';
 import 'package:checkin2/utils/apis_list.dart';
@@ -100,11 +101,11 @@ void initState() {
                               ),
                     ),GestureDetector(
                         onTap: () {
-                    //       Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => ScannedClasses()),
-                    // );
+                          Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ScannedClasses()),
+                    );
                         },
                       child: Column(
                                 children: const [
