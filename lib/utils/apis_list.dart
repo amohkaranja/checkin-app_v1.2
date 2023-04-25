@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
+import '../screens/registered_classes.dart';
 import '../screens/scanned_classes.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -188,13 +189,13 @@ Future<dynamic> fetchScannedClasses() async {
     final prefs = await SharedPreferences.getInstance();
      var id= (prefs.getString("student_id"));
      var data ={"student_id":id};
-       var url = Uri.parse("${api}load_history_scanned.php?student_id=$id");
+       var url = Uri.parse("${api}load_history_scanned.php");
   var response = await http.post(url,body: data);
          
 
   if (response.statusCode == 200) {
   
-  List<dynamic> responseData = json.decode(response.body??"[]");
+  List<dynamic> responseData = json.decode(response.body);
  
    List<ScannedClass> scannedClassesList = parseResponseData(responseData);
 
@@ -203,6 +204,37 @@ Future<dynamic> fetchScannedClasses() async {
     return "Error fetching scanned classes, try again later";
   }
 }
+
+
+
+List<RegisteredClass> parseResponseJsonData(List<dynamic> response) {
+  List<RegisteredClass> registeredClasses = [];
+
+  for (var data in response) {
+  
+    RegisteredClass classes = RegisteredClass.fromJson(data);
+    registeredClasses.add(classes);
+  }
+  return registeredClasses;
+}
+Future<dynamic> fetchRegisteredClasses() async {
+    final prefs = await SharedPreferences.getInstance();
+     var id= (prefs.getString("student_id"));
+     var data ={"student_id":id};
+       var url = Uri.parse("${api}load_registered_classes.php");
+  var response = await http.post(url,body: data);
+         
+
+  if (response.statusCode == 200) {
+  
+  List<dynamic> responseData = json.decode(response.body);
+   List<RegisteredClass> registeredClassesList = parseResponseJsonData(responseData);
+    return RegisteredClasses(registeredClasses: registeredClassesList);
+  } else {
+    return "Error fetching scanned classes, try again later";
+  }
+}
+
 
 String  isPasswordValid(String password) {
     // Check if password is at least 8 characters long

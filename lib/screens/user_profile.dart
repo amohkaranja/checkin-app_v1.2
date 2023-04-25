@@ -2,6 +2,7 @@
 // import 'package:checkin/screens/Scanned_classes.dart';
 // import 'package:checkin/screens/classes.dart';
 import 'package:checkin2/screens/login_page.dart';
+import 'package:checkin2/screens/registered_classes.dart';
 import 'package:checkin2/screens/scanned_classes.dart';
 // import 'package:checkin/screens/security.dart';
 import 'package:checkin2/screens/student_home.dart';
@@ -87,11 +88,23 @@ void initState() {
                   children: [
                     GestureDetector(
                       onTap: () {
-                    //       Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => MyClasses()),
-                    // );
+                      fetchRegisteredClasses().then((result) {
+                          if (result is RegisteredClasses) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => result),
+                            );
+                          } else if (result is String) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(result)),
+                            );
+                          }
+                        }).catchError((error) {
+                          print(error);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Error: ${error.toString()}")),
+                          );
+                        });
                         },
                       child: Column(
                                 children: const [
