@@ -101,11 +101,24 @@ void initState() {
                               ),
                     ),GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ScannedClasses()),
-                    );
+                    fetchScannedClasses().then((result) {
+                          if (result is ScannedClasses) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => result),
+                            );
+                          } else if (result is String) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(result)),
+                            );
+                          }
+                        }).catchError((error) {
+                          print(error);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Error: ${error.toString()}")),
+                          );
+                        });
+
                         },
                       child: Column(
                                 children: const [

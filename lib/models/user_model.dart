@@ -68,7 +68,7 @@ class ClassModel{
      });
     factory ClassModel.fromJson(Map<String, dynamic> json) {
     return ClassModel(
-      class_id: json[' class_id'],
+      class_id: json['class_id'],
       unit_id: json['unit_id'],
       lec_id: json['lec_id'],
       class_sem: json['class_sem'],
@@ -92,6 +92,7 @@ class ScannedClass{
   late String attendance_id;
   late String student_id;
   late String class_id;
+  late String class_date;
   late String class_time;
   late String lec_name;
   late String unit_code;
@@ -102,6 +103,7 @@ class ScannedClass{
     required this.attendance_id,
     required this.student_id,
     required this.class_id,
+    required this.class_date,
     required this.class_time,
     required this.lec_name,
     required this.unit_name,
@@ -111,14 +113,16 @@ class ScannedClass{
   );
   factory ScannedClass.fromJson(Map<String, dynamic> json) {
        return ScannedClass(
-        attendance_id: json[' attendance_id'], 
-       student_id: json[' student_id'],
-        class_id: json[' class_id'], 
-        class_time: json[' class_time'], 
-        lec_name: json[' lec_name'], 
-        unit_name: json[' unit_name'], 
-        unit_code: json[' unit_code'], 
-        unit_id: json[' unit_id']
+        attendance_id: json['attendance_id'], 
+       student_id: json['student_id'],
+        class_id: json['class_id'], 
+        class_date: json['class_date'], 
+        class_time: json['class_time'], 
+        lec_name: json['lec_name'], 
+        unit_code: json['unit_code'], 
+        unit_name: json['unit_name'], 
+        unit_id: json['unit_id']
         );
   }
+  
 }

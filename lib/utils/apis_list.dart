@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+
+import '../screens/scanned_classes.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
@@ -156,12 +158,9 @@ void Patch(dynamic data, String url, Function callback) async {
   callback(null, jsonResponse["message"]);
 }
 void get(String url,Function callback) async{
- final prefs = await SharedPreferences.getInstance();
-     var token= (prefs.getString("token"));
   var url = Uri.parse("${api}api/auth/users/me"); 
     var response=  await http.get(url,headers:  <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization':'Bearer ${token!}',
       },);
   // print(response);
   var jsonResponse = convert.jsonDecode(response.body) as Map<String, dynamic>;
@@ -173,6 +172,36 @@ void get(String url,Function callback) async{
     return callback(jsonResponse["message"], null);
   }
   callback(null, jsonResponse["message"]);
+}
+List<ScannedClass> parseResponseData(List<dynamic> response) {
+  List<ScannedClass> attendances = [];
+
+  for (var data in response) {
+  
+    ScannedClass attendance = ScannedClass.fromJson(data);
+    attendances.add(attendance);
+  }
+
+  return attendances;
+}
+Future<dynamic> fetchScannedClasses() async {
+    final prefs = await SharedPreferences.getInstance();
+     var id= (prefs.getString("student_id"));
+     var data ={"student_id":id};
+       var url = Uri.parse("${api}load_history_scanned.php?student_id=$id");
+  var response = await http.post(url,body: data);
+         
+
+  if (response.statusCode == 200) {
+  
+  List<dynamic> responseData = json.decode(response.body??"[]");
+ 
+   List<ScannedClass> scannedClassesList = parseResponseData(responseData);
+
+   return ScannedClasses(scannedClassesList: scannedClassesList);
+  } else {
+    return "Error fetching scanned classes, try again later";
+  }
 }
 
 String  isPasswordValid(String password) {
