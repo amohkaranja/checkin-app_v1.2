@@ -126,3 +126,38 @@ class ScannedClass{
   }
   
 }
+
+class RegisteredClass{
+  late int id;
+  late String student_id;
+  late String class_id;
+  late int unit_id;
+  late String date_reg;
+  late String lec_name;
+  late String unit_code;
+  late String unit_name;
+
+  RegisteredClass({
+    required this.id,
+    required this.student_id,
+    required this.class_id,
+    required this.unit_id,
+    required this.date_reg,
+    required this.lec_name,
+    required this.unit_code,
+    required this.unit_name,
+  }
+  );
+   factory RegisteredClass.fromJson(Map<String, dynamic> json) {
+       return RegisteredClass(
+        id: json['id'], 
+       student_id: json['student_id'],
+        class_id: json['class_id'], 
+        unit_id: json['unit_id'], 
+        date_reg: json['date_reg'], 
+        lec_name: json['lec_name'], 
+        unit_code: json['unit_code'], 
+        unit_name: json['unit_name']
+        );
+  }
+}
