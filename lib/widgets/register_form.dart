@@ -73,7 +73,6 @@ class _UserRegisterState extends State<UserRegister> {
         _isPhoneNumber &&
         _isRegNo &&
         _isPassword) {
-      print(data);
       post(
           data,
           "student_register.php",
@@ -151,7 +150,7 @@ class _UserRegisterState extends State<UserRegister> {
                   borderRadius: BorderRadius.circular(5.0),
                   gapPadding: 5.0,
                 )),
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.name,
             onChanged: (value) {
               // Validate the phone number as the user types
               if (!validatePhone(value)) {
@@ -185,7 +184,7 @@ class _UserRegisterState extends State<UserRegister> {
                   borderRadius: BorderRadius.circular(5.0),
                   gapPadding: 5.0,
                 )),
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.name,
             onChanged: (value) {
               // Validate the phone number as the user types
               if (!validatePhone(value)) {

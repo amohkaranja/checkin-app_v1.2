@@ -27,8 +27,7 @@ class _ClassScanState extends State<ClassScan> {
   submit(Code){
     print("step 7");
     var data={"student_id":_profile!.id,"qr_code":Code};
-    var url="qr_code";
-    print("step 8");
+    var url="student_class_scan.php";
       setState(() {
       _errorMessage = "";
       _loading=true;
@@ -55,7 +54,7 @@ postScan(data, url, (result, error) => {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => StudentHomeScreen()),
+                        builder: (context) => const StudentHomeScreen()),
                   )
                 }
             });
@@ -130,8 +129,23 @@ void initState() {
           ),
              Expanded(child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-           Text("Place the QR code in the area",
+              children:  [
+                  _errorMessage != ""
+                  ? Container(
+                      height: 20,
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: const BoxDecoration(),
+                      padding: const EdgeInsets.all(2),
+                      child: Text(
+                        "$_errorMessage",
+                        style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    )
+                  : Container(height: 1),
+           const Text("Place the QR code in the area",
            style: TextStyle(
              color: Colors.black87,
              fontSize: 18,
@@ -139,10 +153,10 @@ void initState() {
              letterSpacing: 1
            ),
            ),
-           SizedBox(
+           const SizedBox(
              height: 10,
            ),
-            Text("Scanning will be started automatically",
+            const Text("Scanning will be started automatically",
            style: TextStyle(
              color: Colors.black54,
              fontSize: 16,
@@ -155,18 +169,12 @@ void initState() {
             child: MobileScanner(
               controller: scannerController,
         onDetect: (capture){
-          print("step 1");
               final List<Barcode> barcodes = capture.barcodes;
-              print("step 2");
              String code;
                for (final barcode in barcodes) {
-                print("step 3");
                 if(!isScanCompleted){
-                  print("step 4");
                   code=barcode.rawValue??'---';
-                  print("step 5");
                   isScanCompleted=true;
-                  print("step 6");
                   submit( code);
                 }
           }
