@@ -4,6 +4,7 @@
 import 'package:checkin2/screens/login_page.dart';
 import 'package:checkin2/screens/registered_classes.dart';
 import 'package:checkin2/screens/scanned_classes.dart';
+import 'package:checkin2/screens/security_edit.dart';
 // import 'package:checkin/screens/security.dart';
 import 'package:checkin2/screens/student_home.dart';
 import 'package:checkin2/utils/apis_list.dart';
@@ -180,11 +181,11 @@ void initState() {
             padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 10.0),
             child: GestureDetector(
                  onTap: () {
-                    //       Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => ChangePassword()),
-                    // );
+                          Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ChangePassword()),
+                    );
                         },
               child: Row(
                 children: [
