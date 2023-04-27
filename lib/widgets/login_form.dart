@@ -32,9 +32,8 @@ class _LoginFormState extends State<LoginForm> {
                   setState(() {
                   _loading=false;
                 }),
-                  print(error),
                   setState(() {
-                    _errorMessage = error;
+                    _errorMessage = "Invalid username or password!";
                   })
                 }
               else

@@ -15,6 +15,7 @@ class Profile{
   late String regNo;
   late String id;
   late String student_profile;
+  late String password;
 }
 
 class Institution {

@@ -19,14 +19,14 @@ const api = "http://admin.check-in.co.ke:71/";
 /// @param{(error:JSON,result:JSON)} callback
 void login(data, callback) async {
   final prefs = await SharedPreferences.getInstance();
-  prefs.setString('password',data["password"]);
+ 
   var url = Uri.parse("${api}student_login.php");
   var response = await http.post(url, body: data);
   var jsonResponse = convert.jsonDecode(response.body) as Map<String, dynamic>;
 
   // ignore: avoid_print
   if (jsonResponse["success"] == "2") {
-     
+     prefs.setString('password',data["password"]); 
     prefs.setString('student_id', jsonResponse['login'][0]['student_id']);
     prefs.setString('firstname', jsonResponse['login'][0]['firstname']);
     prefs.setString('lastname', jsonResponse['login'][0]['lastname']);
@@ -58,7 +58,7 @@ Future<Profile> profileData() async {
   profile.regNo = prefs.getString('regNo')!;
   profile.student_profile = prefs.getString('student_profile')!;
   String? emailValidation = prefs.getString('email_validation');
-  String? password=prefs.getString('password');
+  profile.password=prefs.getString('password')!;
     return profile;
 
 }
@@ -106,17 +106,11 @@ void post(dynamic data, String url, Function callback) async {
   
 }
 void postScan(dynamic data, String url, Function callback) async{
-  print("step 8");
+  
   var apiUrl = Uri.parse(api + url);
-  print(data);
-  print("step 9");
   var response = await http.post(apiUrl,body: data);
-  print(response);
-print("step 10");
   var jsonResponse =  await convert.jsonDecode(response.body) as Map<String, dynamic>;
-  print(jsonResponse);
-  print(jsonResponse["success"]);
-  print("step 11");
+ 
   switch(jsonResponse["success"]) {
   case '1':
     callback("success", null);
@@ -134,32 +128,22 @@ print("step 10");
     callback(null, "Failed to register!. Please try again");
     break;
 }
-  if (jsonResponse["success"] == "1") {
-    // ignore: void_checks
-    return callback("success", null);
-  }else{
-    callback(null, jsonResponse["message"]);
-  }
+
 }
 
 
 void Patch(dynamic data, String url, Function callback) async {
-   final prefs = await SharedPreferences.getInstance();
-     var token= (prefs.getString("token"));
   var apiUrl = Uri.parse(api + url);
-  var response = await http.patch(apiUrl,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization':'Bearer ${token!}',
-      },
-      body: jsonEncode(data));
-
+  
+  var response = await http.post(apiUrl,body: data);
+   print(apiUrl); 
   var jsonResponse = convert.jsonDecode(response.body) as Map<String, dynamic>;
-  if (response.statusCode == 200) {
-    // ignore: void_checks
+  if (jsonResponse["success"] == "2") {
+    final prefs = await SharedPreferences.getInstance();
+     prefs.setString('password',data["new_password"]);
     return callback("success", null);
   }
-  callback(null, jsonResponse["message"]);
+  callback(null, "An error occured during processing.Try later");
 }
 
 void get(String url,Function callback) async{

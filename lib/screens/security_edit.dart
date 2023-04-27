@@ -44,31 +44,34 @@ void initState() {
     });
 }
 
-submit(){
+  submit(){
    setState(() {
       _errorMessage = "";
      _loading=true;
     });
-    var data= {"new_password":_password,"account":2,"password":_currentPassword};
-    var url= 'api/auth/users/password/${_profile!.id}';
-    
-    Patch(data, url, (result,error)=>{
+        var data= {"new_password":_password,"account":"2","shared_id":_profile!.id};
+    var url= 'update_password.php';
+    if(_currentPassword!=_profile!.password){
+          setState(() {
+                  _loading=false;
+                  _errorMessage = "Invalid current password";
+                });
+          }else{
+         Patch(data, url, (result,error)=>{
     
        if (result == null)
           {
-                  // print(error),
                   setState(() {
                   _loading=false;
                   _errorMessage = error;
                 }),
-                  
-                 
               }
               else
                 {
 
                   setState(() {
                   _loading=false;
+                  
                 }),
                   Navigator.push(
                     context,
@@ -77,6 +80,10 @@ submit(){
                   )
                 }
     });
+}
+
+    
+  
 }
   @override
   Widget build(BuildContext context) {
@@ -91,167 +98,183 @@ submit(){
       ),
        body: Form(
           key: _formKey,
-         child: Column(children:<Widget> [
-                      Container(
-                  
-                  width: double.infinity,
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0,),
-                      child: Container(
-                        height: 140,
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: const Color(0xff008346),width: 2.0),
-                            ),
-                        child: const Image(
-                          image: AssetImage("assets/images/logo_jpg.png"),
-                          fit: BoxFit.contain,
+         child: SingleChildScrollView(
+           child: Column(children:<Widget> [
+                        Container(
+                    
+                    width: double.infinity,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10.0,),
+                        child: Container(
+                          height: 140,
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: const Color(0xff008346),width: 2.0),
+                              ),
+                          child: const Image(
+                            image: AssetImage("assets/images/logo_jpg.png"),
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-          
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    child: TextFormField(
-                      controller: currentPasswordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Currently Password',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          gapPadding: 5.0,
-                        ),
+              _errorMessage != ""
+                  ? Container(
+                      height: 20,
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: const BoxDecoration(),
+                      padding: const EdgeInsets.all(2),
+                      child: Text(
+                        "$_errorMessage",
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
                       ),
-                      validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter current password';
-                      } else {
-                         setState(() {
-                        _currentPassword = value;
-                    });
-                      }
-                    },
-                    onSaved: (value) => _currentPassword = value!,
-                     onChanged: (value) {
-                setState(() {
-                  _currentPassword = value;
-                });
-              },
-                    ),
-                  ),
-                ),
+                    )
+                  : Container(height: 1),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Card(
                       child: TextFormField(
-                        controller: passwordController,
-                                  obscureText: true,
-                                  decoration: InputDecoration(
-                        labelText: 'Password',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          gapPadding: 5.0,
-                        ),
-                                  ),
-                validator: (value) {
-                if (value!.isEmpty) {
-                  setState(() {
-                    _isPassword = false;
-                  });
-                  return 'Please enter a password';
-                } else {
-                  setState(() {
-                    _isPassword = true;
-                  });
-                  if(isPasswordValid(value)!=""){
-                    return isPasswordValid(value);
-                  }else{
-                    return null;
-                  };
-                }
-              },
-              onSaved: (value) => _password = value!,
-              onChanged: (value) {
-                setState(() {
-                  _password = value;
-                });
-              },
-                                ),
-                    ),
-                  ),
-              
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    child: TextFormField(
-                      controller: confirmPasswordController,
-                      decoration: InputDecoration(
-                          labelText: 'confirm password',
+                        controller: currentPasswordController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: 'Currently Password',
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            gapPadding: 10.0,
-                          )),
-                      obscureText: true,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter confirm password';
-                } else {
-                  if (value != _password) {
-                    return 'password does not match';
-                  }
-                }
-       
-                return null;
-              },
-              onEditingComplete: () {
-                _confirmPassowrd= confirmPasswordController.text;
-                if (!validatePassword()) {
-                  // Show an error message or perform some other action
-                }
-              },
-              onSaved: (value) => _confirmPassowrd = value!,
+                            borderRadius: BorderRadius.circular(5.0),
+                            gapPadding: 5.0,
+                          ),
+                        ),
+                        validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter current password';
+                        } else {
+                           setState(() {
+                          _currentPassword = value;
+                      });
+                        }
+                      },
+                      onSaved: (value) => _currentPassword = value!,
+                       onChanged: (value) {
+                  setState(() {
+                    _currentPassword = value;
+                  });
+                },
+                      ),
                     ),
                   ),
-                ),
-                    ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff008346),
-                ),
-                onPressed: () {
-                  FocusScope.of(context).unfocus();
-                   if (_formKey.currentState!.validate()) {
-                _formKey.currentState!.save();
-                submit();
-              }
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        child: TextFormField(
+                          controller: passwordController,
+                                    obscureText: true,
+                                    decoration: InputDecoration(
+                          labelText: 'Password',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            gapPadding: 5.0,
+                          ),
+                                    ),
+                  validator: (value) {
+                  if (value!.isEmpty) {
+                    setState(() {
+                      _isPassword = false;
+                    });
+                    return 'Please enter a password';
+                  } else {
+                    setState(() {
+                      _isPassword = true;
+                    });
+                    if(isPasswordValid(value)!=""){
+                      return isPasswordValid(value);
+                    }else{
+                      return null;
+                    };
+                  }
                 },
-                child: const Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: Text('Change Password'),
+                onSaved: (value) => _password = value!,
+                onChanged: (value) {
+                  setState(() {
+                    _password = value;
+                  });
+                },
+                                  ),
+                      ),
+                    ),
+                
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      child: TextFormField(
+                        controller: confirmPasswordController,
+                        decoration: InputDecoration(
+                            labelText: 'confirm password',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              gapPadding: 10.0,
+                            )),
+                        obscureText: true,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter confirm password';
+                  } else {
+                    if (value != _password) {
+                      return 'password does not match';
+                    }
+                  }
+                
+                  return null;
+                },
+                onEditingComplete: () {
+                  _confirmPassowrd= confirmPasswordController.text;
+                  if (!validatePassword()) {
+                    // Show an error message or perform some other action
+                  }
+                },
+                onSaved: (value) => _confirmPassowrd = value!,
+                      ),
+                    ),
+                  ),
+                      ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff008346),
+                  ),
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                     if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  submit();
+                }
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Text('Change Password'),
+                  ),
                 ),
+                        _loading?  Center(
+               child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(const Color(0xff008346)), 
+              ), 
+              SizedBox(height: 8),
+              Text(
+                'Loading...',
+                style: TextStyle(fontStyle: FontStyle.italic),
               ),
-                      _loading?  Center(
-             child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(const Color(0xff008346)), 
-            ), 
-            SizedBox(height: 8),
-            Text(
-              'Loading...',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ],
-             ),
-           ):Container()  
-                ]),
+            ],
+               ),
+             ):Container()  
+                  ]),
+         ),
          
        )
        
