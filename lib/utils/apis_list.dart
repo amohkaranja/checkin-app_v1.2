@@ -110,13 +110,12 @@ void postScan(dynamic data, String url, Function callback) async{
   var apiUrl = Uri.parse(api + url);
   var response = await http.post(apiUrl,body: data);
   var jsonResponse =  await convert.jsonDecode(response.body) as Map<String, dynamic>;
- 
   switch(jsonResponse["success"]) {
   case '1':
     callback("success", null);
     break;
   case '2':
-    callback("2", {"model":ClassModel.fromJson(jsonResponse["scans"][0]),"stdId":data.student_id,"qrData":data.qr_code});
+    callback("2", {"model":ClassModel.fromJson(jsonResponse["scans"][0]),"stdId":data["student_id"],"qrData":data["qr_code"]});
     break;
   case '3':
     callback(null, "Already Signed in!");

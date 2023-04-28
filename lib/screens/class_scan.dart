@@ -25,7 +25,6 @@ class _ClassScanState extends State<ClassScan> {
     isScanCompleted=false;
   }
   submit(Code){
-    print("step 7");
     var data={"student_id":_profile!.id,"qr_code":Code};
     var url="student_class_scan.php";
       setState(() {
@@ -43,7 +42,13 @@ postScan(data, url, (result, error) => {
                   })
                 }
                 else if(result=="2"){
-              ClassInstance(model:error["model"],stdId:error["stdId"],qrData:error["qrData"],)
+                
+                 Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ClassInstance(model:error["model"],stdId:error["stdId"],qrData:error["qrData"],)),
+                  )
+              
                 }
               else
                 {
