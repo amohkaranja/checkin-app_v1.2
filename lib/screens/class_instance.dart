@@ -22,7 +22,13 @@ class ClassInstance extends StatefulWidget {
 class _ClassInstanceState extends State<ClassInstance> {
   String _errorMessage = "";
   bool _loading = false;
-
+  bool registered=false;
+   void home(){
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const StudentHomeScreen()),
+        );
+   }              
   void submit() {
     var data = {
       "student_id": widget.stdId,
@@ -43,11 +49,8 @@ class _ClassInstanceState extends State<ClassInstance> {
       } else {
         setState(() {
           _loading = false;
+          _errorMessage = error ?? "Class registered successfully!";
         });
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const StudentHomeScreen()),
-        );
       }
     });
   }
@@ -91,6 +94,21 @@ class _ClassInstanceState extends State<ClassInstance> {
                   child: Column(
                     
                     children: [
+                         _errorMessage != ""
+                  ? Container(
+                      height: 20,
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: const BoxDecoration(),
+                      padding: const EdgeInsets.all(2),
+                      child: Text(
+                        "$_errorMessage",
+                        style: const TextStyle(
+                            color: Colors.green,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  : Container(height: 1),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                       
@@ -162,7 +180,8 @@ class _ClassInstanceState extends State<ClassInstance> {
                       ),
                       Row(
                         children: [
-                          Expanded(child: ElevatedButton(onPressed: () {
+                          Expanded(child: !registered? ElevatedButton(onPressed: () {
+                            submit();
                             
                           },child: const Text("Register"),style: ElevatedButton.styleFrom(
   
@@ -173,9 +192,22 @@ class _ClassInstanceState extends State<ClassInstance> {
                     ),
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), // button padding
                 ),
-              )),
+              ):ElevatedButton(onPressed: () {
+                            home();
+                            
+                          },child: const Text("Ok"),style: ElevatedButton.styleFrom(
+  
+                      backgroundColor: Colors.green, 
+                      elevation: 5, 
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                    ),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), // button padding
+                ),
+              )
+              ),
               const Spacer(),
-                          Expanded(child: ElevatedButton(onPressed: () {
+                        registered? Expanded(child: ElevatedButton(onPressed: () {
                                 Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -190,7 +222,7 @@ class _ClassInstanceState extends State<ClassInstance> {
                         borderRadius: BorderRadius.circular(10),
                     ),
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), // button padding
-                ),))
+                ),)):Container(height: 1),
                         ],
                       )
                     ],
