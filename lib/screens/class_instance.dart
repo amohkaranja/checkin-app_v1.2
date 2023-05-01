@@ -49,6 +49,7 @@ class _ClassInstanceState extends State<ClassInstance> {
       } else {
         setState(() {
           _loading = false;
+          registered=true;
           _errorMessage = error ?? "Class registered successfully!";
         });
       }
@@ -207,7 +208,7 @@ class _ClassInstanceState extends State<ClassInstance> {
               )
               ),
               const Spacer(),
-                        registered? Expanded(child: ElevatedButton(onPressed: () {
+                        !registered? Expanded(child: ElevatedButton(onPressed: () {
                                 Navigator.push(
                       context,
                       MaterialPageRoute(
