@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:checkin2/screens/student_home.dart';
 import 'package:checkin2/utils/apis_list.dart';
 import 'package:flutter/material.dart';
@@ -18,13 +20,26 @@ class _OtpPageState extends State<OtpPage> {
   String studentId="";
   String otp ="";
   String email="";
-  String error="kakitu";
+  String error="";
   bool errorStat=false;
   bool loading=false;
+ var _timer;
+  bool _isRequestingOTP = false;
+  int _countdown = 60;
   @override
   void initState() {
     super.initState();
     loaduserdata();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    if (_countdown > 0) {
+      setState(() {
+        _countdown--;
+      });
+    } else {
+      _timer.cancel();
+      _isRequestingOTP = false;
+    }
+  });
   }
   Future <void> loaduserdata() async{
       final prefs = await SharedPreferences.getInstance();
@@ -33,6 +48,28 @@ class _OtpPageState extends State<OtpPage> {
       otp= prefs.getString("email_validation")!;
       email= prefs.getString("email")!;
       });
+  }
+  resendOtp(){
+     var data={"student_id":studentId};
+     var url="resend_student_email.php";
+      post(data, url, (result,error)=>{
+    
+        loading=false,
+          if(result==null){
+          error="Request failed due to server error. Please try again later",
+            errorStat=true
+          }
+      });
+       _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    if (_countdown > 0) {
+      setState(() {
+        _countdown--;
+      });
+    } else {
+      _timer.cancel();
+      _isRequestingOTP = false;
+    }
+  });
   }
   submit(pin){
      setState(() {
@@ -114,7 +151,7 @@ class _OtpPageState extends State<OtpPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 60,vertical: 20),
                   child: Text("An email was sent to your address to confirm on its validity and" 
-                  "ownership. Please enter the 6-digit code sent to validate your account$otp",style: TextStyle(fontStyle: FontStyle.italic)),
+                  "ownership. Please enter the 6-digit code sent to validate your account",style: TextStyle(fontStyle: FontStyle.italic)),
                 ),
               ],
             ),
@@ -151,9 +188,14 @@ class _OtpPageState extends State<OtpPage> {
                 backgroundColor: const Color(0xff008346),
               ),
               onPressed: () {
-             
-              },
-              child: const Text('Resend Email'),
+                   if (!_isRequestingOTP) {
+                    setState(() {
+                       _isRequestingOTP = true;
+                       _countdown=60;
+                     });
+                  resendOtp();
+        } },
+              child:  Text( _countdown > 0 ? '$_countdown seconds' : 'Request OTP',),
             ),
             Padding(
               child: Column(
