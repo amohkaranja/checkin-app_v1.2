@@ -35,13 +35,21 @@ void login(data, callback) async {
     prefs.setString('regNo', jsonResponse['login'][0]['regNo']);
     prefs.setString('student_profile', jsonResponse['login'][0]['student_profile']);
     prefs.setString('email_validation', jsonResponse['login'][0]['email_validation']);
+    print(jsonResponse['login'][0]['email_validation']);
         // ignore: void_checks
-    return callback(jsonResponse["message"], null);
-  }else{
+    if(jsonResponse['login'][0]['email_validation'].length>1){
+      return callback("2", null);
+    }else{
+       return callback(jsonResponse["message"], null);
+    }
+    
+    
+  } else{
     callback(null, jsonResponse["message"]);
   }
   
 }
+
 void logout() async{
    print("logout");
 }
