@@ -119,6 +119,7 @@ class _OtpPageState extends State<OtpPage> {
               ],
             ),
           ),
+
          errorStat? Padding(padding:EdgeInsets.symmetric(horizontal: 8),child: Text(error,style: TextStyle(color: Colors.red),), ):Container(height: 1),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 40),
@@ -127,6 +128,7 @@ class _OtpPageState extends State<OtpPage> {
               child: OTPTextField(
                   controller: otpController,
                   length: 6,
+
                   width: MediaQuery.of(context).size.width,
                   textFieldAlignment: MainAxisAlignment.spaceAround,
                   fieldWidth: 45,
@@ -140,7 +142,7 @@ class _OtpPageState extends State<OtpPage> {
                   },
                   onCompleted: (pin) {
                     submit(pin);
-                    print("Completed: " + pin);
+                    print("Changed: " + pin);
                   }),
             ),
             SizedBox(height: 20),
@@ -163,6 +165,7 @@ class _OtpPageState extends State<OtpPage> {
               padding: EdgeInsets.symmetric(vertical: 10,
             
             )
+
             ),
                      loading?  Center(
                child: Column(
