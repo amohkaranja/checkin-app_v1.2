@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_print
+import 'package:checkin2/screens/otp_page.dart';
 import 'package:checkin2/screens/user_signUp.dart';
 import 'package:checkin2/screens/student_home.dart';
 import 'package:flutter/material.dart';
@@ -41,11 +42,20 @@ class _LoginFormState extends State<LoginForm> {
                     setState(() {
                   _loading=false;
                 }),
-                  Navigator.push(
+                if(result=="2"){
+                   Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OtpPage()),
+                  )
+                }else{
+                   Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => StudentHomeScreen()),
                   )
+                }
+                 
                 }
             });
   }
