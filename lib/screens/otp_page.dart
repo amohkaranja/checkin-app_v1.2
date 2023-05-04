@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:checkin2/screens/reset_password.dart';
 import 'package:checkin2/screens/student_home.dart';
 import 'package:checkin2/utils/apis_list.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +9,11 @@ import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class OtpPage extends StatefulWidget {
-  const OtpPage({super.key});
+import 'login_page.dart';
 
+class OtpPage extends StatefulWidget {
+  const OtpPage({super.key,required this.origin});
+final String origin;
   @override
   State<OtpPage> createState() => _OtpPageState();
 }
@@ -49,6 +52,23 @@ class _OtpPageState extends State<OtpPage> {
       email= prefs.getString("email")!;
       });
   }
+  clearUser() async{
+ final prefs = await SharedPreferences.getInstance();
+     prefs.setString('password',""); 
+    prefs.setString('student_id', "");
+    prefs.setString('firstname', "");
+    prefs.setString('lastname', "");
+    prefs.setString('email', "");
+    prefs.setString('phone', "");
+    prefs.setString('regNo', "");
+    prefs.setString('student_profile', "");
+    prefs.setString('email_validation',"");
+        Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomeScreen()),
+                  );
+  }
   resendOtp(){
      var data={"student_id":studentId};
      var url="resend_student_email.php";
@@ -85,11 +105,20 @@ class _OtpPageState extends State<OtpPage> {
           error="Request failed due to server error. Please try again later",
             errorStat=true
           }else{
-              Navigator.push(
+            if(widget.origin=="reset"){
+               Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ResetPassword()),
+                  )
+            }else{
+               Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => StudentHomeScreen()),
                   )
+            }
+             
           }
       });
     }else{
@@ -151,7 +180,7 @@ class _OtpPageState extends State<OtpPage> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 60,vertical: 20),
                   child: Text("An email was sent to your address to confirm on its validity and" 
-                  "ownership. Please enter the 6-digit code sent to validate your account",style: TextStyle(fontStyle: FontStyle.italic)),
+                  "ownership. Please enter the 6-digit code sent to validate your account$otp",style: TextStyle(fontStyle: FontStyle.italic)),
                 ),
               ],
             ),
@@ -201,7 +230,11 @@ class _OtpPageState extends State<OtpPage> {
               child: Column(
                 children: [
                   Text("Not your email?",style: TextStyle(color: Colors.red),),
-                   Text("Click here to change account",style: TextStyle(color: Colors.red),)
+                   GestureDetector(
+                    onTap: (){
+                      clearUser();
+                    },
+                    child: Text("Click here to change account",style: TextStyle(color: Colors.red),))
                 ],
               ),
               padding: EdgeInsets.symmetric(vertical: 10,

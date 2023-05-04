@@ -3,7 +3,9 @@ import 'package:checkin2/screens/otp_page.dart';
 import 'package:checkin2/screens/user_signUp.dart';
 import 'package:checkin2/screens/student_home.dart';
 import 'package:flutter/material.dart';
- import '../utils/apis_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+ import '../screens/reset_password.dart';
+import '../utils/apis_list.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -18,6 +20,35 @@ class _LoginFormState extends State<LoginForm> {
   bool _loading=false;
   late String _username = "", _password = "";
   String _errorMessage = "";
+    sendOtp() async{
+     final prefs = await SharedPreferences.getInstance();
+     var  studentId= prefs.getString("student_id")!;
+     var data={"student_id":studentId};
+     var url="resend_student_email.php";
+      post(data, url, (result,error)=>{
+         if (result == null)
+          {
+                  setState(() {
+                  _loading=false;
+                  _errorMessage = error;
+                }),
+              }
+              else
+                {
+
+                  setState(() {
+                  _loading=false;
+                  
+                }),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OtpPage(origin: "reset")),
+                  )
+                }
+      });
+   
+  }
   submit() {
     setState(() {
       _errorMessage = "";
@@ -46,7 +77,7 @@ class _LoginFormState extends State<LoginForm> {
                    Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => OtpPage()),
+                        builder: (context) => OtpPage(origin: "new_user",)),
                   )
                 }else{
                    Navigator.push(
@@ -82,6 +113,8 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   )
                 : Container(height: 1),
+             
+                
             TextFormField(
               initialValue: "",
               decoration: InputDecoration(
@@ -160,6 +193,16 @@ class _LoginFormState extends State<LoginForm> {
     child: const Text(
       "click here to register",
       style: TextStyle(color: Colors.blue),
+    ),
+  ),
+),                 Builder(
+  builder: (context) => GestureDetector(
+    onTap: () {
+     sendOtp();
+    },
+    child: const Text(
+      "Forgot password?",
+      style: TextStyle(color: Colors.red),
     ),
   ),
 )
