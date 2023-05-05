@@ -21,6 +21,7 @@ class User_Profile extends StatefulWidget {
 
 class _User_ProfileState extends State<User_Profile> {
  Profile? _profile; 
+Map<String, dynamic> result = {"scan":0,"register":0};
   @override
 void initState() {
   super.initState();
@@ -29,8 +30,11 @@ void initState() {
 
   Future<void> loadProfileData() async {
   final profile = await profileData();
+  final _result = await fetch_Scanned_Registered();
+  print(_result);
    setState(() {
       _profile = profile; // assign the value of profile to _profile
+      result=_result;
     });
 }
   @override
@@ -108,9 +112,9 @@ void initState() {
                         });
                         },
                       child: Column(
-                                children: const [
+                                children: [
                                   Text("Classes Registered",style: TextStyle(color: Color(0xff008346)),),
-                                  Text("2")
+                                  Text(result['register'].toString())
                                 ],
                               ),
                     ),GestureDetector(
@@ -135,9 +139,9 @@ void initState() {
 
                         },
                       child: Column(
-                                children: const [
+                                children:  [
                                   Text("Classes signed",style: TextStyle(color: Color(0xff008346))),
-                                  Text("2")
+                                  Text(result['scan'].toString())
                                 ],
                               ),
                     )

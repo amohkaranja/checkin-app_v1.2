@@ -199,7 +199,20 @@ Future<dynamic> fetchScannedClasses() async {
     return "Error fetching scanned classes, try again later";
   }
 }
-
+Future<dynamic> fetch_Scanned_Registered() async{
+   final prefs = await SharedPreferences.getInstance();
+     var id= (prefs.getString("student_id"));
+     var data ={"student_id":id};
+     var url_scanned = Uri.parse("${api}load_history_scanned.php");
+     var url_registred = Uri.parse("${api}load_registered_classes.php");
+     var Scannedresponse = await http.post(url_scanned,body: data);
+     List<dynamic> ScannedData = json.decode(Scannedresponse.body);
+     var Registredresponse = await http.post(url_registred,body: data);
+     List<dynamic> RegistredData = json.decode(Registredresponse.body);
+     List<RegisteredClass> registeredClassesList = parseResponseJsonData(RegistredData);
+     List<ScannedClass> scannedClassesList = parseResponseData(ScannedData);
+     return ({"scan":scannedClassesList.length,"register":registeredClassesList.length});
+}
 
 
 List<RegisteredClass> parseResponseJsonData(List<dynamic> response) {
