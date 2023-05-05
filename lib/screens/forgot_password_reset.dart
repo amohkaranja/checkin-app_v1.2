@@ -29,7 +29,7 @@ bool _isCurrentPassword = false;
 bool _isConfirmPassword = false;
 late String _password = "",
 _confirmPassowrd="";
-  Profile? _profile; 
+  String email="";
   String _errorMessage = "";
   @override
 void initState() {
@@ -38,10 +38,10 @@ void initState() {
   }
 
    Future<void> loadProfileData() async {
-  final profile = await profileData();
-   setState(() {
-      _profile = profile; // assign the value of profile to _profile
-    });
+    final prefs = await SharedPreferences.getInstance();
+       setState(() {
+      email= prefs.getString("email")!;
+      });
 }
 
   submit(){
@@ -49,8 +49,8 @@ void initState() {
       _errorMessage = "";
      _loading=true;
     });
-        var data= {"new_password":_password,"account":"2","shared_id":_profile!.id};
-    var url= 'update_password.php';
+        var data= {"password":_password,"account":"2","email":email};
+    var url= 'forgot_password_reset.php';
          Patch(data, url, (result,error)=>{
     
        if (result == null)

@@ -100,12 +100,11 @@ Future<bool> fetchDataAndSaveToPrefs() async {
 
 
 void post(dynamic data, String url, Function callback) async {
-  
+ 
   var apiUrl = Uri.parse(api + url);
   var response = await http.post(apiUrl,body: data);
-
   var jsonResponse = convert.jsonDecode(response.body) as Map<String, dynamic>;
-  if (jsonResponse["success"] == "1") {
+  if (jsonResponse["success"] == "1"||jsonResponse["success"] == "2") {
     // ignore: void_checks
     return callback("success", null);
   }else{
@@ -117,6 +116,7 @@ void postScan(dynamic data, String url, Function callback) async{
   
   var apiUrl = Uri.parse(api + url);
   var response = await http.post(apiUrl,body: data);
+  
   var jsonResponse =  await convert.jsonDecode(response.body) as Map<String, dynamic>;
   switch(jsonResponse["success"]) {
   case '1':
