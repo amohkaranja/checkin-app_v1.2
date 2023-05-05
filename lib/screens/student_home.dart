@@ -1,6 +1,7 @@
 import 'package:checkin2/models/user_model.dart';
 import 'package:checkin2/screens/class_instance.dart';
 import 'package:checkin2/screens/class_scan.dart';
+import 'package:checkin2/screens/class_scanII.dart';
 import 'package:checkin2/screens/generate_code.dart';
 import 'package:checkin2/screens/registered_classes.dart';
 import 'package:checkin2/screens/scanned_classes.dart';
@@ -65,7 +66,7 @@ class StudentHomeScreen extends StatelessWidget {
                           Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ClassScan()),
+                          builder: (context) => ClassScanII()),
                     );
                         },
                 child: Card(

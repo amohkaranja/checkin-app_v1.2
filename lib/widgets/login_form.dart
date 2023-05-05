@@ -1,4 +1,5 @@
 // ignore_for_file: avoid_print
+import 'package:checkin2/screens/email_validation.dart';
 import 'package:checkin2/screens/otp_page.dart';
 import 'package:checkin2/screens/user_signUp.dart';
 import 'package:checkin2/screens/student_home.dart';
@@ -198,7 +199,11 @@ class _LoginFormState extends State<LoginForm> {
 ),                 Builder(
   builder: (context) => GestureDetector(
     onTap: () {
-     sendOtp();
+        Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EmailValidation()),
+                  );
     },
     child: const Text(
       "Forgot password?",

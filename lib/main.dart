@@ -1,7 +1,4 @@
-import 'package:checkin2/screens/class_scanII.dart';
 import 'package:checkin2/screens/index_page.dart';
-import 'package:checkin2/screens/otp_page.dart';
-import 'package:checkin2/screens/qr_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:checkin2/screens/login_page.dart';
 
@@ -40,7 +37,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch()
             .copyWith(secondary: const Color(0xff00836F)),
       ),
-      home: ClassScanII(),
+      home: IndexPage(),
     );
   }
 }
