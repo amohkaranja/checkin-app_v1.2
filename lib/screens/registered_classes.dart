@@ -49,7 +49,7 @@ class _RegisteredClassesState extends State<RegisteredClasses> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Text(registeredClass.unit_code,style: TextStyle(fontWeight: FontWeight.bold),),
-                              SizedBox(width: 150),
+                              SizedBox(width: 100),
                               Text(registeredClass.date_reg,style: TextStyle(fontSize: 14),)
                             ],
                           ),
