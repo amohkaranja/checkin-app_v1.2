@@ -33,11 +33,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Checkin',
       theme: ThemeData(
-        primarySwatch: buildMaterialColor(const Color(0xff008346)),
-        colorScheme: ColorScheme.fromSwatch()
-            .copyWith(secondary: const Color(0xff00836F)),
+        primaryColor: Color(0xFFFFFFFF),
+        highlightColor:Color(0xFF00836F) ,
+        focusColor: Color(0xFF008346),
       ),
-      home: IndexPage(),
+      home: HomeScreen(), 
     );
   }
 }

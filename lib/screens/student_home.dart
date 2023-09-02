@@ -1,3 +1,4 @@
+import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:checkin2/models/user_model.dart';
 import 'package:checkin2/screens/class_instance.dart';
 import 'package:checkin2/screens/class_scan.dart';
@@ -8,8 +9,31 @@ import 'package:checkin2/screens/scanned_classes.dart';
 import 'package:flutter/material.dart';
 import '../utils/apis_list.dart';
 import 'user_profile.dart';
-class StudentHomeScreen extends StatelessWidget {
+
+const List<TabItem> items = [
+  TabItem(
+    icon: Icons.home,
+     title: 'Home',
+  ),
+
+  TabItem(
+    icon: Icons.account_box,
+    title: 'profile',
+  ),
+];
+class StudentHomeScreen extends StatefulWidget {
   const StudentHomeScreen({super.key});
+
+  @override
+  State<StudentHomeScreen> createState() => _StudentHomeScreenState();
+}
+
+class _StudentHomeScreenState extends State<StudentHomeScreen> {
+   int _currentIndex = 0;
+void initState(){
+  super.initState();
+    _currentIndex = 0;
+}
 
   @override
   Widget build(BuildContext context) {
@@ -225,56 +249,36 @@ class StudentHomeScreen extends StatelessWidget {
             ),
             
           ),
-           
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0,),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      children:  <Widget>[
-                        
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => StudentHomeScreen()),
-                      );
-                          },
-                          child: Image(
-                            image: AssetImage("assets/images/home.png"),
-                            height: 40,
-                          ),
-                        ),
-                        Text("Home")
-                      ],
-                    ),
-                    Column(
-                      children:  [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => User_Profile()),
-                      );
-                          },
-                          child: const Image(
-                            image: AssetImage("assets/images/account.png"),
-                            height: 40,
-                          ),
-                        ),
-                        const Text("Profile")
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
         ]),
+        
       ),
+       bottomNavigationBar: Container(
+        padding:const EdgeInsets.symmetric(vertical: 0),
+        child: BottomBarFloating(
+          items: items,
+          backgroundColor: const Color(0xff008346),
+          color: Colors.white,
+          colorSelected: Colors.orange,
+          indexSelected:  _currentIndex ,
+          paddingVertical: 20,
+          onTap: (int index) => setState(() {
+                _currentIndex = index;
+            if (index == 0) {
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const StudentHomeScreen()),
+                    );
+            } else if (index == 1) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const User_Profile()),
+                    );
+            }
+          }),
+        ),
+      )
     );
   }
 }
