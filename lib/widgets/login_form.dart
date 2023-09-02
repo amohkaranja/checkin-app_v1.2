@@ -5,7 +5,6 @@ import 'package:checkin2/screens/user_signUp.dart';
 import 'package:checkin2/screens/student_home.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
- import '../screens/reset_password.dart';
 import '../utils/apis_list.dart';
 
 class LoginForm extends StatefulWidget {
