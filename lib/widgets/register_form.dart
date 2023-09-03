@@ -366,7 +366,7 @@ class _UserRegisterState extends State<UserRegister> {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xff008346),
+              backgroundColor: Theme.of(context).focusColor,
             ),
             onPressed: () {
               
@@ -390,7 +390,7 @@ class Loading extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          color: const Color.fromARGB(255, 11, 239, 129).withOpacity(0.5),
+          color: Theme.of(context).focusColor,
           child: const Center(
             child: CircularProgressIndicator(),
           ),

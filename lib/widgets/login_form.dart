@@ -118,12 +118,19 @@ class _LoginFormState extends State<LoginForm> {
             TextFormField(
               initialValue: "",
               decoration: InputDecoration(
-                  labelText: 'Username',
-                 
+                // labelStyle:  Theme.of(context).textTheme.bodySmall,
+                fillColor: Theme.of(context).primaryColorLight,
+                  labelText: 'Username',   
+                   labelStyle: TextStyle(
+                color: Theme.of(context).brightness == Brightness.light
+                    ? Colors.black // Light mode text color
+                    : Colors.white, // Dark mode text color
+              ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
                     gapPadding: 10.0,
-                  )),
+                  ),
+                  ),
               validator: (value) {
                 if (value!.isEmpty) {
                   return 'Please enter a username';
@@ -164,7 +171,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff008346),
+                backgroundColor: Theme.of(context).focusColor,
               ),
               onPressed: () {
                
@@ -181,7 +188,7 @@ class _LoginFormState extends State<LoginForm> {
               child: SizedBox(
                 child: Column(
                   children: <Widget>[
-                    const Text("DO you have an account?"),
+                     Text("Do you have an account?",style: Theme.of(context).textTheme.bodyMedium,),
                    Builder(
   builder: (context) => GestureDetector(
     onTap: () {
@@ -217,9 +224,9 @@ class _LoginFormState extends State<LoginForm> {
           _loading?  Center(
   child: Column(
     mainAxisAlignment: MainAxisAlignment.center,
-    children: const [
+    children:  [
       CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(const Color(0xff008346)), 
+          valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).focusColor), 
       ), 
       SizedBox(height: 8),
       Text(

@@ -1,13 +1,11 @@
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
-import 'package:checkin2/models/user_model.dart';
-import 'package:checkin2/screens/class_instance.dart';
 import 'package:checkin2/screens/class_scan.dart';
-import 'package:checkin2/screens/class_scanII.dart';
 import 'package:checkin2/screens/generate_code.dart';
 import 'package:checkin2/screens/registered_classes.dart';
 import 'package:checkin2/screens/scanned_classes.dart';
 import 'package:flutter/material.dart';
 import '../utils/apis_list.dart';
+import 'login_page.dart';
 import 'user_profile.dart';
 
 const List<TabItem> items = [
@@ -34,17 +32,25 @@ void initState(){
   super.initState();
     _currentIndex = 0;
 }
+  void _navigateToLoginPage() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomeScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        leading: IconButton(icon: Icon(Icons.arrow_back_sharp),onPressed: (){
+          _navigateToLoginPage();
+        },),
+        title:  Text(
           "My QR Code",
-          style: TextStyle(
-              fontStyle: FontStyle.italic, fontWeight: FontWeight.w400),
+          style:  Theme.of(context).textTheme.headlineLarge
         ),
-        backgroundColor: const Color(0xff008346),
+        backgroundColor: Theme.of(context).focusColor,
       ),
       body: SingleChildScrollView(
         child: Column(children: <Widget>[
@@ -58,16 +64,16 @@ void initState(){
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
-                    boxShadow: const [
+                    boxShadow:  [
                       BoxShadow(
-                          color: Colors.white,
+                         color: Theme.of(context).primaryColor,
                           spreadRadius: 2,
                           blurRadius: 5,
                           offset: Offset(0, 3))
                     ]),
                 child: const Image(
                   height:120,
-                  image: AssetImage("assets/images/logo_jpg.png"),
+                  image: AssetImage("assets/images/logo.png"),
                   fit: BoxFit.contain,
                 ),
               ),
@@ -79,7 +85,7 @@ void initState(){
             decoration: BoxDecoration(boxShadow: [
               
               BoxShadow(
-                color: Colors.grey.shade300,
+                 color: Theme.of(context).primaryColor,
                 spreadRadius: 0.5,
                 blurRadius: 3,
               )
@@ -97,13 +103,13 @@ void initState(){
                     child: Padding(
                       padding: const EdgeInsets.all(30.0),
                       child: Center(
-                        child: Column(children: const <Widget>[
+                        child: Column(children:  <Widget>[
                           Image(
                             image: AssetImage("assets/images/qr_code_black.png"),
                             height: 80,
                             fit: BoxFit.contain,
                           ),
-                          Text("Scan Class")
+                          Text("Scan Class",style: Theme.of(context).textTheme.bodyMedium)
                         ]),
                       ),
                     ),
@@ -120,7 +126,7 @@ void initState(){
                              child: Container(
                                 decoration: BoxDecoration(boxShadow: [
                                   BoxShadow(
-                                    color: Colors.grey.shade300,
+                                     color: Theme.of(context).primaryColor,
                                     spreadRadius: 0.5,
                                     blurRadius: 3,
                                   )
@@ -145,28 +151,30 @@ void initState(){
                           );
                         });
                         },
-                                    child: Card(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(30.0),
-                                            child: Column(children: const <Widget>[
-                                                                      Image(
-                                                                        image: AssetImage("assets/images/chalk_board.png"),
-                                                                        height: 80,
-                                                                        fit: BoxFit.contain,
-                                                                      ),
-                                                                      Text("Registered class")
-                                                       ]),
-                                          ),
-                                                
-                                               ),
-                                  ),
+                        child: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(30.0),
+                                child:
+                                 Column(
+                                  children:  <Widget>[
+                                                    Image(
+                                                        image: AssetImage("assets/images/chalk_board.png"),
+                                                        height: 80,
+                                                        fit: BoxFit.contain,
+                                                      ),
+                                                      Text("Registered class",style: Theme.of(context).textTheme.bodyMedium)
+                                            ]),
+                              ),
+                                    
+                                    ),
+                      ),
                              ),
                            ),
                            Expanded(
                              child: Container(
                                            decoration: BoxDecoration(boxShadow: [
                                              BoxShadow(
-                                               color: Colors.grey.shade300,
+                                                color: Theme.of(context).primaryColor,
                                                spreadRadius: 0.5,
                                                blurRadius: 3,
                                              )
@@ -192,19 +200,22 @@ void initState(){
                         });
 
                         },
-                                               child: Card(
-                                                     child: Padding(
-                                                       padding: const EdgeInsets.all(30.0),
-                                                       child: Column(children: const <Widget>[
-                                                                                 Image(
-                                                                                   image: AssetImage("assets/images/time_machine.png"),
-                                                                                   height: 80,
-                                                                                   fit: BoxFit.contain,
-                                                                                 ),
-                                                                                 Text("Scanned Activities")
-                                                       ]),
-                                                     ),
-                                               ),
+                          child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(30.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children:  <Widget>[
+                                                            Image(
+                                                              image: AssetImage("assets/images/time_machine.png"),
+                                                              height: 80,
+                                                              fit: BoxFit.contain,
+                                                            ),
+                                                            Text("Scanned Activities",style: Theme.of(context).textTheme.bodyMedium)
+                                  ]),
+                                ),
+                          ),
                                              ),
                              ),
                            ),
@@ -212,11 +223,12 @@ void initState(){
                        ),
                ),
                     Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8),
-            decoration: BoxDecoration(boxShadow: [
+        // margin: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              boxShadow: [
               
               BoxShadow(
-                color: Colors.grey.shade300,
+                color: Theme.of(context).primaryColor,
                 spreadRadius: 0.5,
                 blurRadius: 3,
               )
@@ -234,13 +246,13 @@ void initState(){
                     child: Padding(
                       padding: const EdgeInsets.all(30.0),
                       child: Center(
-                        child: Column(children: const <Widget>[
+                        child: Column(children:  <Widget>[
                           Image(
                             image: AssetImage("assets/images/blue_qr_code.png"),
                             height: 80,
                             fit: BoxFit.contain,
                           ),
-                          Text("Generate my QR Code")
+                          Text("Generate my QR Code",style: Theme.of(context).textTheme.bodyMedium)
                         ]),
                       ),
                     ),
@@ -256,7 +268,8 @@ void initState(){
         padding:const EdgeInsets.symmetric(vertical: 0),
         child: BottomBarFloating(
           items: items,
-          backgroundColor: const Color(0xff008346),
+          titleStyle:  Theme.of(context).textTheme.bodyMedium,
+          backgroundColor: Theme.of(context).focusColor,
           color: Colors.white,
           colorSelected: Colors.orange,
           indexSelected:  _currentIndex ,

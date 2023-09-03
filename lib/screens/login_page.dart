@@ -17,20 +17,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: const Color(0xff008346),
-            elevation: 0.0,
-          ),
-          backgroundColor: Colors.white,
+         
+         backgroundColor: Theme.of(context).focusColor,
           body: Column(
             children: <Widget>[
               Container(
                 height: 10.0,
-                decoration: const BoxDecoration(color: Colors.white),
+                decoration:  BoxDecoration(color: Theme.of(context).primaryColor),
               ),
               Expanded(
                 child: Container(
-                  decoration: const BoxDecoration(color: Colors.white),
+                  decoration:  BoxDecoration(color: Theme.of(context).primaryColor),
                   child: Expanded(
                     child: Column(children: <Widget>[
                       Expanded(

@@ -16,14 +16,11 @@ class _RegisteredClassesState extends State<RegisteredClasses> {
   Widget build(BuildContext context) {
     return Scaffold(
        appBar: AppBar(
-        title: const Text(
+        title:  Text(
           "Registered classes",
-          style: TextStyle(
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.w400,
-          ),
+          style: Theme.of(context).textTheme.headlineLarge,
         ),
-        backgroundColor: const Color(0xff008346),
+        backgroundColor: Theme.of(context).focusColor,
       ),
       body: 
         ListView.builder(
