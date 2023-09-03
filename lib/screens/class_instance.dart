@@ -64,7 +64,7 @@ class _ClassInstanceState extends State<ClassInstance> {
           style: TextStyle(
               fontStyle: FontStyle.italic, fontWeight: FontWeight.w400),
         ),
-        backgroundColor: const Color(0xff008346),
+        backgroundColor: Theme.of(context).focusColor,
       ),
       body: Container(
           width: double.infinity,
@@ -84,7 +84,7 @@ class _ClassInstanceState extends State<ClassInstance> {
                     borderRadius: BorderRadius.circular(10.0),
                     boxShadow:  [
                       BoxShadow(
-                         color: Colors.grey.shade200,
+                          color: Theme.of(context).primaryColor,
                          spreadRadius: 0.5,
                          blurRadius: 3,
                           // offset: Offset(0, 3)

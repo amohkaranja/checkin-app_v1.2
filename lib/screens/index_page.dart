@@ -49,7 +49,7 @@ class _IndexPageState extends State<IndexPage> {
   Widget build(BuildContext context) {
     
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).primaryColor,
       body:  Stack(
         
         children: <Widget>[
@@ -59,16 +59,16 @@ class _IndexPageState extends State<IndexPage> {
               right: 0,
                 child: Column(children:  <Widget>[
                   const Image(
-                          image: AssetImage("assets/images/logo_jpg.png"),
+                          image: AssetImage("assets/images/logo.png"),
                           height: 200,
                           width: 200,
                         ),
              const Text("v 2.0"),
              _loading?  Center(
               child: Column(mainAxisAlignment: MainAxisAlignment.center,
-    children: const [
+    children:  [
       CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(const Color(0xff008346)), 
+          valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).focusColor), 
       ), 
       SizedBox(height: 8),
      

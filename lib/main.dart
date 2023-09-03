@@ -1,4 +1,3 @@
-import 'package:checkin2/screens/index_page.dart';
 import 'package:flutter/material.dart';
 import 'package:checkin2/screens/login_page.dart';
 
@@ -32,10 +31,61 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Checkin',
+        themeMode: ThemeMode.system,
+      darkTheme: ThemeData(
+          brightness: Brightness.dark,
+        primaryColor: const Color.fromARGB(255, 60, 59, 59),
+        primaryColorLight: Colors.white,
+        textTheme: const TextTheme(
+          bodyMedium: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 14,
+            color: Colors.white,
+            fontWeight: FontWeight.w400,
+          ),
+            bodySmall: TextStyle(
+                fontFamily: 'OpenSans',
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+             fontStyle: FontStyle.italic,
+             color: Colors.white,
+          ),
+              headlineLarge: TextStyle(
+        fontFamily: 'OpenSans',
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+             fontStyle: FontStyle.italic
+          ),
+        )
+      ),
       theme: ThemeData(
         primaryColor: Color(0xFFFFFFFF),
         highlightColor:Color(0xFF00836F) ,
         focusColor: Color(0xFF008346),
+         textTheme: const TextTheme(
+          bodyMedium: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 14,
+              color: Colors.black,
+            fontWeight: FontWeight.w400,
+          ),
+          bodySmall: TextStyle(
+                fontFamily: 'OpenSans',
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+             fontStyle: FontStyle.italic,
+             color: Colors.black,
+          ),
+          headlineLarge: TextStyle(
+        fontFamily: 'OpenSans',
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+             fontStyle: FontStyle.italic
+          ),
+
+         )
       ),
       home: HomeScreen(), 
     );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../models/user_model.dart';
-import '../utils/apis_list.dart';
 
 class ScannedClasses extends StatefulWidget {
   const ScannedClasses({
@@ -21,14 +20,11 @@ class _ScannedClassesState extends State<ScannedClasses> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title:  Text(
           "Scanned classes",
-          style: TextStyle(
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.w400,
-          ),
+          style:  Theme.of(context).textTheme.headlineLarge,
         ),
-        backgroundColor: const Color(0xff008346),
+        backgroundColor: Theme.of(context).focusColor,
       ),
       body: ListView.builder(
         itemCount: widget.scannedClassesList.length,

@@ -72,7 +72,7 @@ class _EmailValidationState extends State<EmailValidation> {
           style: TextStyle(
               fontStyle: FontStyle.italic, fontWeight: FontWeight.w400),
         ),
-        backgroundColor: const Color(0xff008346),
+        backgroundColor: Theme.of(context).focusColor,
       ),
       body: Column(
         children: [
@@ -89,10 +89,10 @@ class _EmailValidationState extends State<EmailValidation> {
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: const Color(0xff008346),width: 2.0),
+                    border: Border.all(color: Theme.of(context).focusColor,width: 2.0),
                       ),
                   child: const Image(
-                    image: AssetImage("assets/images/logo_jpg.png"),
+                    image: AssetImage("assets/images/logo.png"),
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -150,7 +150,7 @@ class _EmailValidationState extends State<EmailValidation> {
             ),
              ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff008346),
+                backgroundColor: Theme.of(context).focusColor,
               ),
               onPressed: () {
                 
@@ -165,9 +165,9 @@ class _EmailValidationState extends State<EmailValidation> {
                   _loading?  Center(
   child: Column(
     mainAxisAlignment: MainAxisAlignment.center,
-    children: const [
+    children:  [
       CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(const Color(0xff008346)), 
+          valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).focusColor), 
       ), 
       SizedBox(height: 8),
       Text(

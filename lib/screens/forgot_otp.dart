@@ -67,7 +67,7 @@ class _OtpPageState extends State<ForgotOtpPage> {
           style: TextStyle(
               fontStyle: FontStyle.italic, fontWeight: FontWeight.w400),
         ),
-        backgroundColor: const Color(0xff008346),
+        backgroundColor: Theme.of(context).focusColor,
       ),
       body: 
       SingleChildScrollView(
@@ -83,16 +83,16 @@ class _OtpPageState extends State<ForgotOtpPage> {
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
-                    boxShadow: const [
+                    boxShadow:  [
                       BoxShadow(
-                          color: Colors.white,
+                           color: Theme.of(context).primaryColor,
                           spreadRadius: 2,
                           blurRadius: 5,
                           offset: Offset(0, 3))
                     ]),
                 child: const Image(
                   height:120,
-                  image: AssetImage("assets/images/logo_jpg.png"),
+                  image: AssetImage("assets/images/logo.png"),
                   fit: BoxFit.contain,
                 ),
               ),
@@ -159,9 +159,9 @@ class _OtpPageState extends State<ForgotOtpPage> {
                      loading?  Center(
                child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children:  [
               CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(const Color(0xff008346)), 
+                  valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).focusColor), 
               ), 
               SizedBox(height: 8),
               Text(

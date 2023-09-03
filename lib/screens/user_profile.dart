@@ -1,12 +1,8 @@
-// import 'package:checkin/screens/Account_edit.dart';
-// import 'package:checkin/screens/Scanned_classes.dart';
-// import 'package:checkin/screens/classes.dart';
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:checkin2/screens/login_page.dart';
 import 'package:checkin2/screens/registered_classes.dart';
 import 'package:checkin2/screens/scanned_classes.dart';
 import 'package:checkin2/screens/security_edit.dart';
-// import 'package:checkin/screens/security.dart';
 import 'package:checkin2/screens/student_home.dart';
 import 'package:checkin2/utils/apis_list.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +38,12 @@ void initState() {
   loadProfileData();
    _currentIndex = 1;
   }
+    void _navigateToHomePage() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => StudentHomeScreen()),
+    );
+  }
 
   Future<void> loadProfileData() async {
   final profile = await profileData();
@@ -56,12 +58,15 @@ void initState() {
   Widget build(BuildContext context) {
     return Scaffold(
     appBar: AppBar(
+       leading: IconButton(icon: Icon(Icons.arrow_back_sharp),onPressed: (){
+          _navigateToHomePage();
+        },),
         title: const Text(
           "My Profile",
           style: TextStyle(
               fontStyle: FontStyle.italic, fontWeight: FontWeight.w400),
         ),
-        backgroundColor: const Color(0xff008346),
+        backgroundColor: Theme.of(context).focusColor,
       ),
       body: SingleChildScrollView(
         child: Column(children:<Widget> [
@@ -79,10 +84,10 @@ void initState() {
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: const Color(0xff008346),width: 2.0),
+                    border: Border.all(color: Theme.of(context).focusColor,width: 2.0),
                       ),
                   child: const Image(
-                    image: AssetImage("assets/images/logo_jpg.png"),
+                    image: AssetImage("assets/images/logo.png"),
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -92,10 +97,10 @@ void initState() {
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Center(child: Column(children:  <Widget>[
-              Text(_profile?.first_name ?? '',style: TextStyle(fontWeight: FontWeight.w600,fontStyle: FontStyle.italic),),
-              Text(_profile?.email?? '',style: TextStyle(fontStyle: FontStyle.italic,color: Colors.blue),),
-              Text(_profile?.regNo??'',style: TextStyle(fontStyle: FontStyle.italic)),
-              Text(_profile?.phone_number?? '',style: TextStyle(fontWeight: FontWeight.w300,fontStyle: FontStyle.italic)),
+              Text(_profile?.first_name ?? '', style:  Theme.of(context).textTheme.bodyMedium),
+              Text(_profile?.email?? '', style:  Theme.of(context).textTheme.bodySmall),
+              Text(_profile?.regNo??'', style:  Theme.of(context).textTheme.bodySmall),
+              Text(_profile?.phone_number?? '', style:  Theme.of(context).textTheme.bodySmall),
             ]),),
           ),
      
@@ -128,7 +133,7 @@ void initState() {
                         },
                       child: Column(
                                 children: [
-                                  Text("Classes Registered",style: TextStyle(color: Color(0xff008346)),),
+                                  Text("Classes Registered",style: Theme.of(context).textTheme.bodySmall),
                                   Text(result['register'].toString())
                                 ],
                               ),
@@ -155,7 +160,7 @@ void initState() {
                         },
                       child: Column(
                                 children:  [
-                                  Text("Classes signed",style: TextStyle(color: Color(0xff008346))),
+                                  Text("Classes signed",style: Theme.of(context).textTheme.bodySmall),
                                   Text(result['scan'].toString())
                                 ],
                               ),
@@ -270,8 +275,8 @@ void initState() {
         padding:const EdgeInsets.symmetric(vertical: 0),
         child: BottomBarFloating(
           items: items,
-          backgroundColor: const Color(0xff008346),
-          color: Colors.white,
+          backgroundColor: Theme.of(context).focusColor,
+           color: Colors.white,
           colorSelected: Colors.orange,
           indexSelected:  _currentIndex ,
           paddingVertical: 20,
