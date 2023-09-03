@@ -1,4 +1,4 @@
-name: checkin2
+name: checkin
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -39,16 +39,18 @@ dependencies:
   shared_preferences: ^2.1.0
   mobile_scanner: ^3.2.0
   qr_flutter: ^4.0.0
-  flutter_launcher_icons: ^0.13.1
   otp_text_field: ^1.1.3
   qr_code_scanner: ^1.0.1
   awesome_bottom_bar: ^1.2.4
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
 flutter_icons:
-  image_path: "assets/images/Icon.png"
+  image_path: "assets/icons/Icon.png"
+  android: true
+  ios: true
  
 
   # The "flutter_lints" package below contains a set of recommended lints to

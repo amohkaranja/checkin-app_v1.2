@@ -1,11 +1,12 @@
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
-import 'package:checkin2/screens/login_page.dart';
-import 'package:checkin2/screens/registered_classes.dart';
-import 'package:checkin2/screens/scanned_classes.dart';
-import 'package:checkin2/screens/security_edit.dart';
-import 'package:checkin2/screens/student_home.dart';
-import 'package:checkin2/utils/apis_list.dart';
+import 'package:checkin/screens/login_page.dart';
+import 'package:checkin/screens/registered_classes.dart';
+import 'package:checkin/screens/scanned_classes.dart';
+import 'package:checkin/screens/security_edit.dart';
+import 'package:checkin/screens/student_home.dart';
+import 'package:checkin/utils/apis_list.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user_model.dart';
 
@@ -44,6 +45,12 @@ void initState() {
       MaterialPageRoute(builder: (context) => StudentHomeScreen()),
     );
   }
+
+Future<void>logout() async{
+   final prefs = await SharedPreferences.getInstance();
+   prefs.remove('regNo');
+  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+}
 
   Future<void> loadProfileData() async {
   final profile = await profileData();
@@ -259,7 +266,6 @@ void initState() {
                   GestureDetector(
                     onTap: () {
                       logout();
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
                     },
                     child: Image(image: AssetImage("assets/images/exit.png"),
                                 height: 40,

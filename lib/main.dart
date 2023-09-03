@@ -1,5 +1,6 @@
+import 'package:checkin/screens/index_page.dart';
 import 'package:flutter/material.dart';
-import 'package:checkin2/screens/login_page.dart';
+import 'package:checkin/screens/login_page.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -87,7 +88,7 @@ class MyApp extends StatelessWidget {
 
          )
       ),
-      home: HomeScreen(), 
+      home: IndexPage(), 
     );
   }
 }
