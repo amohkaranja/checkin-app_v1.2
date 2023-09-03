@@ -1,4 +1,4 @@
-import 'package:checkin2/screens/login_page.dart';
+import 'package:checkin/screens/login_page.dart';
 import 'package:flutter/material.dart';
 import '../models/user_model.dart';
 import '../utils/apis_list.dart';

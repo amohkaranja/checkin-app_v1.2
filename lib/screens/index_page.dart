@@ -1,5 +1,5 @@
-import 'package:checkin2/screens/login_page.dart';
-import 'package:checkin2/screens/student_home.dart';
+import 'package:checkin/screens/login_page.dart';
+import 'package:checkin/screens/student_home.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,12 +15,13 @@ class _IndexPageState extends State<IndexPage> {
   @override
   void initState() {
     super.initState();
-    fetchData();
+    callMain();
   }
    void callMain() async{
      final prefs = await SharedPreferences.getInstance();
-    var reg= prefs.getString('regNo');
-    if(reg!.isEmpty){
+    var reg= await prefs.getString('regNo');
+    _loading = false;
+    if(reg != null) {
       Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -40,7 +41,7 @@ class _IndexPageState extends State<IndexPage> {
     void fetchData() async {
     
     setState(() {
-      _loading = false;
+      _loading = true;
       callMain();
     });
    

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:checkin2/widgets/register_form.dart';
+import 'package:checkin/widgets/register_form.dart';
 
 class UserSignUp extends StatefulWidget {
   const UserSignUp({super.key});

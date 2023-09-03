@@ -1,8 +1,8 @@
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
-import 'package:checkin2/screens/class_scan.dart';
-import 'package:checkin2/screens/generate_code.dart';
-import 'package:checkin2/screens/registered_classes.dart';
-import 'package:checkin2/screens/scanned_classes.dart';
+import 'package:checkin/screens/class_scan.dart';
+import 'package:checkin/screens/generate_code.dart';
+import 'package:checkin/screens/registered_classes.dart';
+import 'package:checkin/screens/scanned_classes.dart';
 import 'package:flutter/material.dart';
 import '../utils/apis_list.dart';
 import 'login_page.dart';
