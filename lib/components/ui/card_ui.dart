@@ -16,16 +16,18 @@ class CardDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: Center(
-        child: GestureDetector(
-          onTap: () {
-            onPressed.call();
-          },
+    return InkWell(
+      onTap: () {
+        onPressed.call();
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        child: Center(
           child: Card(
             child: Padding(
-              padding: isBlock? EdgeInsets.symmetric(horizontal:20.0, vertical:20):EdgeInsets.symmetric(horizontal:10.0,vertical: 20),
+              padding: isBlock
+                  ? EdgeInsets.symmetric(horizontal: 20.0, vertical: 20)
+                  : EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
               child: Center(
                 child: Column(children: <Widget>[
                   child,
