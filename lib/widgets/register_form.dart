@@ -91,7 +91,8 @@ class _UserRegisterState extends State<UserRegister> {
                   context,
                   MaterialPageRoute(builder: (context) => const HomeScreen()),
                 )}
-              });
+              },
+          context,);
     }
   }
 

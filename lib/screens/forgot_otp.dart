@@ -56,7 +56,7 @@ class _OtpPageState extends State<ForgotOtpPage> {
                         builder: (context) => ResetPassword()),
                   )
           }
-      });
+      },context);
     
   }
   Widget build(BuildContext context) {

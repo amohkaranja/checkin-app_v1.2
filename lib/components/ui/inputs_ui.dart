@@ -1,6 +1,9 @@
+import 'package:checkin/app/app_config.dart';
+import 'package:checkin/components/base_ui.dart';
 import 'package:checkin/components/ui/input_action.dart';
 import 'package:checkin/themes/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:flutter/services.dart';
 
 class InputUI extends StatefulWidget {
@@ -128,6 +131,7 @@ class _InputUIState extends State<InputUI> {
 
 class FormInputUI extends StatefulWidget {
   final String? hint;
+  final String? label;
   final TextEditingController? controller;
   final TextInputType? inputType;
   final TextAlign? textAlign;
@@ -152,6 +156,7 @@ class FormInputUI extends StatefulWidget {
   const FormInputUI({
     super.key,
     this.hint,
+    this.label,
     this.controller,
     this.inputType = TextInputType.text,
     this.textAlign = TextAlign.start,
@@ -202,12 +207,131 @@ class _FormInputUIState extends State<FormInputUI> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children:[
+        if(widget.label!="")...[UI.text("${widget.label!}")],
+         Stack(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 12,
+            ),
+            margin: const EdgeInsets.only(bottom: 10),
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              border: Border.all(
+                color: isFocused ? AppTheme.primaryColor : AppTheme.inputBorder,
+                width: 1,
+              ),
+            ),
+            child: Focus(
+              child: TextFormField(
+                style: getTextStyle(),
+                controller: widget.controller,
+                obscureText: widget.isPassword,
+                obscuringCharacter: widget.passwordChar,
+                autofocus: widget.focused,
+                textAlign: widget.textAlign ?? TextAlign.start,
+                focusNode: widget.focusNode,
+                autovalidateMode: widget.autovalidate,
+                textCapitalization:
+                    widget.textCapitalization ?? TextCapitalization.sentences,
+                inputFormatters: [
+                  if (widget.charLimit != null) ...[
+                    LengthLimitingTextInputFormatter(widget.charLimit)
+                  ]
+                ],
+                keyboardType: widget.multiLines
+                    ? TextInputType.multiline
+                    : widget.inputType,
+                maxLines: widget.multiLines ? 4 : 1,
+                decoration: InputDecoration.collapsed(
+                  hintText: widget.hint,
+                  hintStyle: const TextStyle(
+                    color: AppTheme.hintTextColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                onChanged: (value) {
+                  widget.onChange?.call(value);
+                },
+                onFieldSubmitted: (value) {
+                  widget.onSubmitted?.call(value);
+                },
+                validator: widget.isOptional
+                    ? (value) {
+                        return null;
+                      }
+                    : widget.validator ??
+                        (value) {
+                          if (value == null || value.isEmpty) {
+                            return widget.errorText ?? "Input is required";
+                          }
+                          return null;
+                        },
+                onEditingComplete: widget.onComplete,
+              ),
+              onFocusChange: (hasFocus) {
+                setState(
+                  () {
+                    isFocused = hasFocus;
+                  },
+                );
+              },
+            ),
+          ),
+          if (widget.inputAction != null) ...{
+            Positioned(
+              right: 0,
+              child: widget.inputAction!,
+            )
+          },
+        ],
+      ),]
+    );
+  }
+}
+
+class PhoneInputUI extends StatefulWidget {
+  final String? hint;
+  final String? label;
+  final String? errorText;
+  final TextEditingController? controller;
+  final String? Function(String?)? validator;
+  final Function(String)? onInputChanged;
+  const PhoneInputUI({
+    super.key,
+    this.hint,
+    this.label,
+    this.errorText,
+    this.controller,
+    this.validator,
+    this.onInputChanged,
+  });
+
+  @override
+  State<PhoneInputUI> createState() => _PhoneInputUIState();
+}
+
+class _PhoneInputUIState extends State<PhoneInputUI> {
+  PhoneNumber initialPhoneNumber = PhoneNumber(
+    isoCode: AppConfig.countryCode,
+  );
+  bool isFocused = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        UI.text("Phone no"),
         Container(
           padding: const EdgeInsets.symmetric(
             horizontal: 10,
-            vertical: 12,
+            vertical: 2,
           ),
           margin: const EdgeInsets.only(bottom: 10),
           decoration: BoxDecoration(
@@ -218,27 +342,21 @@ class _FormInputUIState extends State<FormInputUI> {
             ),
           ),
           child: Focus(
-            child: TextFormField(
-              style: getTextStyle(),
-              controller: widget.controller,
-              obscureText: widget.isPassword,
-              obscuringCharacter: widget.passwordChar,
-              autofocus: widget.focused,
-              textAlign: widget.textAlign ?? TextAlign.start,
-              focusNode: widget.focusNode,
-              autovalidateMode: widget.autovalidate,
-              textCapitalization:
-                  widget.textCapitalization ?? TextCapitalization.sentences,
-              inputFormatters: [
-                if (widget.charLimit != null) ...[
-                  LengthLimitingTextInputFormatter(widget.charLimit)
-                ]
-              ],
-              keyboardType: widget.multiLines
-                  ? TextInputType.multiline
-                  : widget.inputType,
-              maxLines: widget.multiLines ? 4 : 1,
-              decoration: InputDecoration.collapsed(
+            child: InternationalPhoneNumberInput(
+              initialValue: initialPhoneNumber,
+              hintText: widget.hint,
+              textFieldController: widget.controller,
+              errorMessage: widget.errorText,
+              spaceBetweenSelectorAndTextField: 0,
+              onInputChanged: (PhoneNumber number) {
+                widget.onInputChanged?.call(number.phoneNumber ?? "");
+              },
+              selectorConfig: const SelectorConfig(
+                selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                showFlags: true,
+              ),
+              autoValidateMode: AutovalidateMode.onUserInteraction,
+              inputDecoration: InputDecoration.collapsed(
                 hintText: widget.hint,
                 hintStyle: const TextStyle(
                   color: AppTheme.hintTextColor,
@@ -246,24 +364,6 @@ class _FormInputUIState extends State<FormInputUI> {
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              onChanged: (value) {
-                widget.onChange?.call(value);
-              },
-              onFieldSubmitted: (value) {
-                widget.onSubmitted?.call(value);
-              },
-              validator: widget.isOptional
-                  ? (value) {
-                      return null;
-                    }
-                  : widget.validator ??
-                      (value) {
-                        if (value == null || value.isEmpty) {
-                          return widget.errorText ?? "Input is required";
-                        }
-                        return null;
-                      },
-              onEditingComplete: widget.onComplete,
             ),
             onFocusChange: (hasFocus) {
               setState(
@@ -274,12 +374,6 @@ class _FormInputUIState extends State<FormInputUI> {
             },
           ),
         ),
-        if (widget.inputAction != null) ...{
-          Positioned(
-            right: 0,
-            child: widget.inputAction!,
-          )
-        },
       ],
     );
   }
