@@ -1,14 +1,13 @@
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
-import 'package:awesome_bottom_bar/tab_item.dart';
 import 'package:checkin/components/base_ui.dart';
+import 'package:checkin/components/ui/buttons_ui.dart';
 import 'package:checkin/screens/class_scan.dart';
 import 'package:checkin/screens/generate_code.dart';
 import 'package:checkin/screens/login_page.dart';
-import 'package:checkin/screens/registered_classes.dart';
+import 'package:checkin/screens/registered_classes1.dart';
 import 'package:checkin/screens/student_home.dart';
 import 'package:checkin/screens/user_profile.dart';
 import 'package:checkin/themes/app_theme.dart';
-import 'package:checkin/utils/apis_list.dart';
 import 'package:circular_seek_bar/circular_seek_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -37,6 +36,8 @@ class _StudentHomePageState extends State<StudentHomePage> {
       page = const StudentHomeScreen();
     } else if (type == 4) {
       page = const User_Profile();
+    } else if (type == 5) {
+      page = const RegisteredClasses();
     }
     Navigator.pushReplacement(
       context,
@@ -65,8 +66,8 @@ class _StudentHomePageState extends State<StudentHomePage> {
                         onPressed: () {},
                         child: CircularSeekBar(
                           width: double.infinity,
-                          height: 250,
-                          progress: 70,
+                          height: 150,
+                          progress: 100,
                           barWidth: 8,
                           startAngle: 45,
                           sweepAngle: 270,
@@ -110,7 +111,9 @@ class _StudentHomePageState extends State<StudentHomePage> {
                       ),
                       UI.cardView(
                         label: "Scan Class",
-                        onPressed: () {},
+                        onPressed: () {
+                          onNavigate(context, 1);
+                        },
                         child: Image(
                           image: AssetImage("assets/images/qr_code_black.png"),
                           height: 80,
@@ -123,7 +126,9 @@ class _StudentHomePageState extends State<StudentHomePage> {
                             child: UI.cardView(
                               isBlock: false,
                               label: "Registered class",
-                              onPressed: () {},
+                              onPressed: () {
+                                onNavigate(context, 5);
+                              },
                               child: Image(
                                 image:
                                     AssetImage("assets/images/chalk_board.png"),
@@ -157,7 +162,15 @@ class _StudentHomePageState extends State<StudentHomePage> {
                         ),
                       )
                     ],
-                  )
+                  ),
+                  Positioned(
+                    child: UI.buttonLC(
+                        icon: Icons.message,
+                        onPressed: () {},
+                        sizeType: ButtonSizeType.small),
+                    bottom: 60,
+                    right: 0,
+                  ),
                 ],
               ),
             )),
