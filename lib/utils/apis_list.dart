@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:checkin/components/base_ui.dart';
 import 'package:checkin/models/user_model.dart';
 import 'package:checkin/screens/class_instance.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,9 @@ const api = "http://kabarak-apis.check-in.co.ke/";
 /// login functions
 /// @param {JSON} data
 /// @param{(error:JSON,result:JSON)} callback
-void login(data, callback) async {
+void login(data,context, callback) async {
+    var dialog = UI.createWaitDialog(context,message: "waiting for verification...");
+     dialog.show();
   final prefs = await SharedPreferences.getInstance();
 
   var url = Uri.parse("${api}student_login.php");
@@ -35,14 +38,17 @@ void login(data, callback) async {
         'student_profile', jsonResponse['login'][0]['student_profile']);
     prefs.setString(
         'email_validation', jsonResponse['login'][0]['email_validation']);
-
+  dialog.hide();
     // ignore: void_checks
     if (jsonResponse['login'][0]['email_validation'].length > 1) {
+      
       return callback("2", null);
     } else {
+       
       return callback(jsonResponse["message"], null);
     }
   } else {
+     dialog.hide();
     callback(null, jsonResponse["message"]);
   }
 }
@@ -87,16 +93,32 @@ Future<bool> fetchDataAndSaveToPrefs() async {
   return loading;
 }
 
-void post(dynamic data, String url, Function callback) async {
+void post(dynamic data, String url, Function callback, context) async {
+      var dialog = UI.createWaitDialog(context,message: "waiting for verification...");
+     dialog.show();
   var apiUrl = Uri.parse(api + url);
   var response = await http.post(apiUrl, body: data);
   var jsonResponse = convert.jsonDecode(response.body) as Map<String, dynamic>;
   if (jsonResponse["success"] == "1" || jsonResponse["success"] == "2") {
+    dialog.hide();
     // ignore: void_checks
     return callback("success", null);
   } else {
+      dialog.hide();
     callback(null, jsonResponse["message"]);
   }
+}
+void clearUser() async{
+ final prefs = await SharedPreferences.getInstance();
+     prefs.setString('password',""); 
+    prefs.setString('student_id', "");
+    prefs.setString('firstname', "");
+    prefs.setString('lastname', "");
+    prefs.setString('email', "");
+    prefs.setString('phone', "");
+    prefs.setString('regNo', "");
+    prefs.setString('student_profile', "");
+    prefs.setString('email_validation',"");
 }
 
 void postScan(dynamic data, String url, Function callback) async {

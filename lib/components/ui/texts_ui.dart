@@ -9,6 +9,7 @@ class TextUI extends StatelessWidget {
   final TextAlign? textAlign;
   final Color? textColor;
   final double? fontSize;
+  final FontStyle? fontStyle;
   final FontWeight? fontWeight;
   final bool isRequired;
   final double bottomMarging;
@@ -19,6 +20,7 @@ class TextUI extends StatelessWidget {
     this.textAlign = TextAlign.start,
     this.textColor,
     this.fontWeight,
+    this.fontStyle,
     this.fontSize,
     this.isRequired = false,
     this.bottomMarging = 5,
@@ -31,6 +33,7 @@ class TextUI extends StatelessWidget {
         color: textColor,
         fontWeight: fontWeight,
         fontSize: fontSize,
+        fontStyle:fontStyle,
       );
     }
 

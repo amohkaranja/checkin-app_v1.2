@@ -79,7 +79,7 @@ class _OtpPageState extends State<OtpPage> {
           error="Request failed due to server error. Please try again later",
             errorStat=true
           }
-      });
+      },context);
        _timer = Timer.periodic(Duration(seconds: 1), (timer) {
     if (_countdown > 0) {
       setState(() {
@@ -120,7 +120,7 @@ class _OtpPageState extends State<OtpPage> {
             }
              
           }
-      });
+      },context);
     }else{
       setState(() {
         error="Invalid OTP. Please try again later";
