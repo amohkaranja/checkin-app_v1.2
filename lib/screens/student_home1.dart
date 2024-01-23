@@ -5,6 +5,7 @@ import 'package:checkin/screens/class_scan.dart';
 import 'package:checkin/screens/generate_code.dart';
 import 'package:checkin/screens/login_page.dart';
 import 'package:checkin/screens/registered_classes1.dart';
+import 'package:checkin/screens/scanned_classes1.dart';
 import 'package:checkin/screens/student_home.dart';
 import 'package:checkin/screens/user_profile.dart';
 import 'package:checkin/themes/app_theme.dart';
@@ -38,8 +39,10 @@ class _StudentHomePageState extends State<StudentHomePage> {
       page = const User_Profile();
     } else if (type == 5) {
       page = const RegisteredClasses();
+    } else if (type == 6) {
+      page = const ScannedClasses();
     }
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => page,
@@ -49,158 +52,174 @@ class _StudentHomePageState extends State<StudentHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: AppTheme.primaryColor,
-          toolbarHeight: 10,
-        ),
-        body: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            child: SingleChildScrollView(
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      UI.cardView(
-                        label: "",
-                        onPressed: () {},
-                        child: CircularSeekBar(
-                          width: double.infinity,
-                          height: 150,
-                          progress: 100,
-                          barWidth: 8,
-                          startAngle: 45,
-                          sweepAngle: 270,
-                          strokeCap: StrokeCap.butt,
-                          progressGradientColors: const [
-                            Colors.red,
-                            Colors.orange,
-                            Colors.yellow,
-                            Colors.green,
-                            Colors.blue,
-                            Colors.indigo,
-                            Colors.purple
-                          ],
-                          innerThumbRadius: 5,
-                          innerThumbStrokeWidth: 3,
-                          innerThumbColor: Colors.white,
-                          outerThumbRadius: 5,
-                          outerThumbStrokeWidth: 10,
-                          outerThumbColor: Colors.blueAccent,
-                          dashWidth: 1,
-                          dashGap: 2,
-                          animation: true,
-                          curves: Curves.bounceOut,
-                          valueNotifier: _valueNotifier,
-                          child: Center(
-                            child: ValueListenableBuilder(
-                                valueListenable: _valueNotifier,
-                                builder: (_, double value, __) => Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        UI.text(
-                                          '${value.round()}',
-                                        ),
-                                        UI.text(
-                                          'My Attendance %',
-                                        ),
-                                      ],
-                                    )),
-                          ),
-                        ),
-                      ),
-                      UI.cardView(
-                        label: "Scan Class",
-                        onPressed: () {
-                          onNavigate(context, 1);
-                        },
-                        child: Image(
-                          image: AssetImage("assets/images/qr_code_black.png"),
-                          height: 80,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: UI.cardView(
-                              isBlock: false,
-                              label: "Registered class",
-                              onPressed: () {
-                                onNavigate(context, 5);
-                              },
-                              child: Image(
-                                image:
-                                    AssetImage("assets/images/chalk_board.png"),
-                                height: 80,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: UI.cardView(
-                              isBlock: false,
-                              label: "Scanned Activities",
-                              onPressed: () {},
-                              child: Image(
-                                image: AssetImage(
-                                    "assets/images/time_machine.png"),
-                                height: 80,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      UI.cardView(
-                        label: "Generate my QR Code",
-                        onPressed: () {},
-                        child: Image(
-                          image: AssetImage("assets/images/blue_qr_code.png"),
-                          height: 80,
-                          fit: BoxFit.contain,
-                        ),
-                      )
-                    ],
-                  ),
-                  Positioned(
-                    child: UI.buttonLC(
-                        icon: Icons.message,
-                        onPressed: () {},
-                        sizeType: ButtonSizeType.small),
-                    bottom: 60,
-                    right: 0,
-                  ),
-                ],
+    return PopScope(
+       canPop: false,
+          onPopInvoked: (didPop) async {
+            if (didPop) {
+              return;
+            }
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HomeScreen(),
               ),
-            )),
-        bottomNavigationBar: Container(
-          padding: const EdgeInsets.symmetric(vertical: 0),
-          child: BottomBarFloating(
-            items: items,
-            titleStyle: Theme.of(context).textTheme.bodyMedium,
+            );
+          },
+      child: Scaffold(
+          appBar: AppBar(
             backgroundColor: AppTheme.primaryColor,
-            color: Colors.white,
-            colorSelected: Colors.orange,
-            indexSelected: _currentIndex,
-            paddingVertical: 20,
-            onTap: (int index) => setState(() {
-              _currentIndex = index;
-              if (index == 0) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const StudentHomeScreen()),
-                );
-              } else if (index == 1) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const User_Profile()),
-                );
-              }
-            }),
+            toolbarHeight: 10,
           ),
-        ));
+          body: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              child: SingleChildScrollView(
+                child: Stack(
+                  children: [
+                    Column(
+                      children: [
+                        UI.cardView(
+                          label: "",
+                          onPressed: () {},
+                          child: CircularSeekBar(
+                            width: double.infinity,
+                            height: 150,
+                            progress: 100,
+                            barWidth: 8,
+                            startAngle: 45,
+                            sweepAngle: 270,
+                            strokeCap: StrokeCap.butt,
+                            progressGradientColors: const [
+                              Colors.red,
+                              Colors.orange,
+                              Colors.yellow,
+                              Colors.green,
+                              Colors.blue,
+                              Colors.indigo,
+                              Colors.purple
+                            ],
+                            innerThumbRadius: 5,
+                            innerThumbStrokeWidth: 3,
+                            innerThumbColor: Colors.white,
+                            outerThumbRadius: 5,
+                            outerThumbStrokeWidth: 10,
+                            outerThumbColor: Colors.blueAccent,
+                            dashWidth: 1,
+                            dashGap: 2,
+                            animation: true,
+                            curves: Curves.bounceOut,
+                            valueNotifier: _valueNotifier,
+                            child: Center(
+                              child: ValueListenableBuilder(
+                                  valueListenable: _valueNotifier,
+                                  builder: (_, double value, __) => Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          UI.text(
+                                            '${value.round()}',
+                                          ),
+                                          UI.text(
+                                            'My Attendance %',
+                                          ),
+                                        ],
+                                      )),
+                            ),
+                          ),
+                        ),
+                        UI.cardView(
+                          label: "Scan Class",
+                          onPressed: () {
+                            onNavigate(context, 1);
+                          },
+                          child: Image(
+                            image: AssetImage("assets/images/qr_code_black.png"),
+                            height: 80,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: UI.cardView(
+                                isBlock: false,
+                                label: "Registered class",
+                                onPressed: () {
+                                  onNavigate(context, 5);
+                                },
+                                child: Image(
+                                  image:
+                                      AssetImage("assets/images/chalk_board.png"),
+                                  height: 80,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: UI.cardView(
+                                isBlock: false,
+                                label: "Scanned Activities",
+                                onPressed: () {
+                                  onNavigate(context, 6);
+                                },
+                                child: Image(
+                                  image: AssetImage(
+                                      "assets/images/time_machine.png"),
+                                  height: 80,
+                                  fit: BoxFit.contain,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        UI.cardView(
+                          label: "Generate my QR Code",
+                          onPressed: () {},
+                          child: Image(
+                            image: AssetImage("assets/images/blue_qr_code.png"),
+                            height: 80,
+                            fit: BoxFit.contain,
+                          ),
+                        )
+                      ],
+                    ),
+                    Positioned(
+                      child: UI.buttonLC(
+                          icon: Icons.message,
+                          onPressed: () {},
+                          sizeType: ButtonSizeType.small),
+                      bottom: 60,
+                      right: 0,
+                    ),
+                  ],
+                ),
+              )),
+          bottomNavigationBar: Container(
+            padding: const EdgeInsets.symmetric(vertical: 0),
+            child: BottomBarFloating(
+              items: items,
+              titleStyle: Theme.of(context).textTheme.bodyMedium,
+              backgroundColor: AppTheme.primaryColor,
+              color: Colors.white,
+              colorSelected: Colors.orange,
+              indexSelected: _currentIndex,
+              paddingVertical: 20,
+              onTap: (int index) => setState(() {
+                _currentIndex = index;
+                if (index == 0) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const StudentHomeScreen()),
+                  );
+                } else if (index == 1) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const User_Profile()),
+                  );
+                }
+              }),
+            ),
+          )),
+    );
   }
 }
 

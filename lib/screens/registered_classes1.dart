@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:checkin/components/base_ui.dart';
+import 'package:checkin/components/ui/skeleton_ui.dart';
 import 'package:checkin/models/user_model.dart';
+import 'package:checkin/screens/student_home1.dart';
 import 'package:checkin/themes/app_theme.dart';
 import 'package:checkin/utils/apis_list.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +21,7 @@ class RegisteredClasses extends StatefulWidget {
 class _RegisteredClassesState extends State<RegisteredClasses> {
   late String errorMessage = "";
   late List<RegisteredClass> classes = [];
+  bool loading = true;
 
   void loadClasses() async {
     final prefs = await SharedPreferences.getInstance();
@@ -31,9 +34,16 @@ class _RegisteredClassesState extends State<RegisteredClasses> {
       List<dynamic> responseData = json.decode(response.body);
       List<RegisteredClass> registeredClassesList =
           parseResponseJsonData(responseData);
-      classes = registeredClassesList;
+      setState(() {
+        if(registeredClassesList.isEmpty){
+          errorMessage = "You have no registered classes";
+        }
+        classes = registeredClassesList;
+      });
+      loading = false;
     } else {
-      print("Error fetching scanned classes, try again later");
+      loading = false;
+      errorMessage = "Error fetching scanned classes, try again later";
     }
   }
 
@@ -46,24 +56,78 @@ class _RegisteredClassesState extends State<RegisteredClasses> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppTheme.primaryColor,
-        toolbarHeight: 50,
-        title: UI.textHS("My classes", textColor: Colors.black),
-      ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-        child: SingleChildScrollView(
-            child: ListView.separated(
-                padding: const EdgeInsets.all(8),
-                itemBuilder: (BuildContext context, int index) {
-                  return Row(
-                    children: [UI.text(classes[index].lec_name)],
-                  );
-                },
-                separatorBuilder: (context, index) => const Divider(),
-                itemCount: classes.length)),
+    return PopScope(
+       canPop: false,
+          onPopInvoked: (didPop) async {
+            if (didPop) {
+              return;
+            }
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const StudentHomePage(),
+              ),
+            );
+          },
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          backgroundColor: AppTheme.primaryColor,
+          toolbarHeight: 50,
+          title: UI.textHS(
+            "My classes",
+            textColor: Colors.white,
+          ),
+        ),
+        body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 20),
+          child:loading? Skeleton (): classes.isEmpty?Center(
+           child: UI.text(errorMessage),
+          ): ListView.separated(
+              padding: const EdgeInsets.all(8),
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: const Image(
+                            image: AssetImage("assets/images/chalk_board.png"),
+                            height: 60,
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  UI.text(classes[index].unit_code,
+                                      fontWeight: FontWeight.w800),
+                                  Spacer(),
+                                  UI.text(classes[index].date_reg,
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.w300),
+                                ],
+                              ),
+                            ),
+                            UI.text(classes[index].unit_name),
+                            UI.text(classes[index].lec_name),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) => const Divider(),
+              itemCount: classes.length),
+        ),
       ),
     );
   }
