@@ -31,14 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void onSubmit() {
-    if (_formKey.currentState!.validate()) {
+    if (!_formKey.currentState!.validate()) {
       setState(() {
         _errorMessage = "";
       });
-      var data = {
-        "email": usernameController.text,
-        "password": passwordController.text
-      };
+      var data = {"email": "murera.stephen@gmail.com", "password": "qwerty123"};
 
       login(
           data,
