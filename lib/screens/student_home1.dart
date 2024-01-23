@@ -53,18 +53,18 @@ class _StudentHomePageState extends State<StudentHomePage> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-       canPop: false,
-          onPopInvoked: (didPop) async {
-            if (didPop) {
-              return;
-            }
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const HomeScreen(),
-              ),
-            );
-          },
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        );
+      },
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: AppTheme.primaryColor,
@@ -131,7 +131,8 @@ class _StudentHomePageState extends State<StudentHomePage> {
                             onNavigate(context, 1);
                           },
                           child: Image(
-                            image: AssetImage("assets/images/qr_code_black.png"),
+                            image:
+                                AssetImage("assets/images/qr_code_black.png"),
                             height: 80,
                             fit: BoxFit.contain,
                           ),
@@ -146,8 +147,8 @@ class _StudentHomePageState extends State<StudentHomePage> {
                                   onNavigate(context, 5);
                                 },
                                 child: Image(
-                                  image:
-                                      AssetImage("assets/images/chalk_board.png"),
+                                  image: AssetImage(
+                                      "assets/images/chalk_board.png"),
                                   height: 80,
                                   fit: BoxFit.contain,
                                 ),
@@ -213,7 +214,8 @@ class _StudentHomePageState extends State<StudentHomePage> {
                 } else if (index == 1) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const User_Profile()),
+                    MaterialPageRoute(
+                        builder: (context) => const User_Profile()),
                   );
                 }
               }),
